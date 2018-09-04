@@ -11,10 +11,12 @@ var $item = $('.item');
 var $amount = $('#amount');
 var $trans_id = $('#transaction_id');
 var $person_select = $('.person_select');
+var person_id = $('#person_id').val();
 
 function transactionController($scope, $http) {
     $scope.selection = {};
     $scope.Math = window.Math;
+    $scope.totals = [];
 
     angular.element(document).ready(function () {
         $('.date').datetimepicker({
@@ -53,9 +55,55 @@ function transactionController($scope, $http) {
         }
     });
 
+    getFormTable(person_id);
+
+    // retrieve page w/wo search
+    function getFormTable(person_id) {
+        $http.post('/api/prices/person', { 'person_id': person_id }).success(function (data) {
+            $scope.prices = data;
+        }).error(function (data) { });
+    }
+
     $http.get('/person/data').success(function (people) {
         $scope.people = people;
     });
+
+    $scope.getAmount = function (price) {
+        var smallest_unit = 0;
+        var amount = 0.00;
+        var base_unit = 1;
+
+        if (price.is_inventory) {
+            base_unit = price.base_unit;
+        }
+
+        if (price.ctn) {
+            smallest_unit += (price.ctn * base_unit);
+        }
+
+        if (price.pcs) {
+            smallest_unit += parseFloat(price.pcs);
+        }
+
+        amount = (smallest_unit * price.quote_price / base_unit).toFixed(2);
+
+        $scope.totals[price.id] = amount;
+
+        return amount;
+    }
+
+    $scope.getTotal = function () {
+        var total = 0;
+        for (var i = 0; i < $scope.totals.length; i++) {
+            var amount = $scope.totals[i];
+            if (amount) {
+                total += parseFloat(amount);
+            }
+        }
+        total = total.toFixed(2);
+
+        return total;
+    }
 
     loadDealTable();
 
@@ -195,3 +243,4 @@ app.filter('removeZero', ['$filter', function ($filter) {
 }]);
 
 app.controller('transactionController', transactionController);
+

@@ -13,6 +13,7 @@ use App\Price;
 use App\Fprice;
 use App\Item;
 use Laracasts\Flash\Flash;
+use DB;
 
 class PriceController extends Controller
 {
@@ -243,6 +244,71 @@ class PriceController extends Controller
             Flash::error('Please select at least one checkbox');
         }
         return redirect()->action('PriceController@getPriceMatrix');
+    }
+
+    // return price list based on person id
+    public function getPersonPricesApi()
+    {
+        $person_id = request('person_id');
+
+        $prices = DB::table('prices')
+            ->leftJoin('items', 'items.id', '=', 'prices.item_id')
+            ->leftJoin('people', 'people.id', '=', 'prices.person_id')
+            ->select(
+                'prices.id',
+                'prices.retail_price',
+                'prices.quote_price',
+                'items.product_id',
+                'items.name',
+                'items.remark',
+                'items.base_unit',
+                'items.is_inventory'
+            )
+            ->where('people.id', $person_id)
+            ->where('items.is_active', 1)
+            ->orderBy('items.product_id', 'asc')
+            ->get();
+/*
+        $person = Person::findOrFail($person_id);
+
+
+        $personprice = DB::raw(
+            "(
+                            SELECT prices.retail_price, prices.quote_price, prices.item_id, people.cost_rate FROM prices
+                            LEFT JOIN people ON people.id = prices.person_id
+                            WHERE people.id = " . $person_id . "
+                            ) personprice"
+        );
+
+        if (auth()->user()->hasRole('franchisee')) {
+            $personprice = DB::raw(
+                "(
+                                SELECT fprices.retail_price, fprices.quote_price, fprices.item_id, people.cost_rate FROM fprices
+                                LEFT JOIN people ON people.id = fprices.person_id
+                                WHERE people.id = " . $person_id . "
+                                ) personprice"
+            );
+        } */
+/*
+        $items = DB::table('items')
+            ->leftJoin($personprice, 'personprice.item_id', '=', 'items.id')
+            ->select(
+                'items.id AS item_id',
+                'items.product_id',
+                'items.name',
+                'items.remark',
+                'items.base_unit',
+                'personprice.retail_price',
+                'personprice.quote_price',
+                'personprice.cost_rate'
+            );
+
+        $items = $items->where('items.is_active', 1)
+            ->orderBy('items.product_id', 'asc')
+            ->get(); */
+
+        return $prices;
+
     }
 
     // return price matrix items filter api()

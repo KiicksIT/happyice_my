@@ -485,6 +485,7 @@ class PersonController extends Controller
                 'items.product_id',
                 'items.name',
                 'items.remark',
+                'items.base_unit',
                 'personprice.retail_price',
                 'personprice.quote_price',
                 'personprice.cost_rate'

@@ -43,7 +43,7 @@
     {!! Form::close() !!}
 
     {!! Form::model($transaction, ['id'=>'new_transaction', 'method'=>'POST', 'action'=>['TransactionController@store']]) !!}
-        <input type="text" class="hidden" name="person_id" value="{{$transaction->person->id}}">
+        <input type="text" id="person_id" class="hidden" name="person_id" value="{{$transaction->person->id}}">
     {!! Form::close() !!}
 
     <div class="panel-body">
