@@ -16,7 +16,7 @@
 
         <div class="panel-body">
             <div class="table-responsive">
-                <table class="table table-list-search table-hover table-bordered">
+                <table class="table table-list-search table-hover table-bordered hidden-xs">
                     <tr style="background-color: #DDFDF8">
                         <th class="col-md-1 text-center">
                             #
@@ -223,7 +223,7 @@
             </div>
 
             <div style="font-size: 15px;">
-                <table class="table table-list-search table-hover table-bordered table-condensed">
+                <table class="table table-list-search table-hover table-bordered table-condensed hidden-lg hidden-md hidden-sm">
                     <tr style="background-color: #DDFDF8">
                         <th class="text-center">
                             Item
@@ -354,22 +354,26 @@
                     </tr>
 
                     <tr ng-if="delivery">
-                        <span class="row">
-                            <span class="col-xs-5">
-                                <strong>
-                                    Delivery Fee
-                                </strong>
+                        <td>
+                            <span class="row">
+                                <span class="col-xs-5">
+                                    <strong>
+                                        Delivery Fee
+                                    </strong>
+                                </span>
+                                <span class="col-xs-7 text-right">
+                                    <strong>
+                                        @{{delivery | currency: ""}}
+                                    </strong>
+                                </span>
                             </span>
-                            <span class="col-xs-7 text-right">
-                                <strong>
-                                    @{{delivery | currency: ""}}
-                                </strong>
-                            </span>
-                        </span>
+                        </td>
                     </tr>
 
-                        @if($transaction->gst and $transaction->is_gst_inclusive)
-                            <tr ng-if="deals.length>0">
+
+                    @if($transaction->gst and $transaction->is_gst_inclusive)
+                        <tr ng-if="deals.length>0">
+                            <td>
                                 <span class="row">
                                     <span class="col-xs-5">
                                         <strong>
@@ -377,9 +381,7 @@
                                         </strong>
                                     </span>
                                     <span class="col-xs-7 text-right">
-                                        <strong>
-                                            @{{getTotalPieces()}}
-                                        </strong>
+                                        @{{getTotalPieces()}}
                                     </span>
                                 </span>
                                 <span class="row">
@@ -389,9 +391,7 @@
                                         </strong>
                                     </span>
                                     <span class="col-xs-7 text-right">
-                                        <strong>
-                                            @{{totalqtyModel}}
-                                        </strong>
+                                        @{{totalqtyModel}}
                                     </span>
                                 </span>
                                 <span class="row">
@@ -413,9 +413,7 @@
                                         </strong>
                                     </span>
                                     <span class="col-xs-7 text-right">
-                                        <strong>
-                                            @{{taxModel | currency: ""}}
-                                        </strong>
+                                        @{{taxModel | currency: ""}}
                                     </span>
                                 </span>
                                 <span class="row">
@@ -425,14 +423,14 @@
                                         </strong>
                                     </span>
                                     <span class="col-xs-7 text-right">
-                                        <strong>
-                                            @{{subtotalModel | currency: ""}}
-                                        </strong>
+                                        @{{subtotalModel | currency: ""}}
                                     </span>
                                 </span>
-                            </tr>
-                        @elseif($transaction->gst and !$transaction->is_gst_inclusive)
-                            <tr ng-if="deals.length>0">
+                            </td>
+                        </tr>
+                    @elseif($transaction->gst and !$transaction->is_gst_inclusive)
+                        <tr ng-if="deals.length>0">
+                            <td>
                                 <span class="row">
                                     <span class="col-xs-5">
                                         <strong>
@@ -440,9 +438,7 @@
                                         </strong>
                                     </span>
                                     <span class="col-xs-7 text-right">
-                                        <strong>
-                                            @{{getTotalPieces()}}
-                                        </strong>
+                                        @{{getTotalPieces()}}
                                     </span>
                                 </span>
                                 <span class="row">
@@ -452,9 +448,7 @@
                                         </strong>
                                     </span>
                                     <span class="col-xs-7 text-right">
-                                        <strong>
-                                            @{{totalqtyModel}}
-                                        </strong>
+                                        @{{totalqtyModel}}
                                     </span>
                                 </span>
                                 <span class="row">
@@ -464,9 +458,7 @@
                                         </strong>
                                     </span>
                                     <span class="col-xs-7 text-right">
-                                        <strong>
-                                            @{{subtotalModel}}
-                                        </strong>
+                                        @{{subtotalModel}}
                                     </span>
                                 </span>
                                 <span class="row">
@@ -476,9 +468,7 @@
                                         </strong>
                                     </span>
                                     <span class="col-xs-7 text-right">
-                                        <strong>
-                                            @{{taxModel | currency: ""}}
-                                        </strong>
+                                        @{{taxModel | currency: ""}}
                                     </span>
                                 </span>
                                 <span class="row">
@@ -493,28 +483,49 @@
                                         </strong>
                                     </span>
                                 </span>
-                            </tr>
-                        @else
-                            <tr ng-if="deals.length>0">
-                                <td colspan="3" class="text-right">
-                                    <strong>Total</strong>
-                                </td>
-                                <td class="col-md-1 text-right">
-                                    @{{getTotalPieces()}}
-                                </td>
-                                <td class="col-md-1 text-right">
-                                    <strong>@{{totalqtyModel}}</strong>
-                                </td>
-                                <td colspan="1"></td>
-                                <td class="col-md-1 text-right">
-                                    <strong>@{{totalModel}}</strong>
-                                </td>
-                            </tr>
-                        @endif
-                        <tr ng-show="(deals | filter:search).deals == 0 || ! deals.length">
-                            <td colspan="12" class="text-center">No Records Found!</td>
+                            </td>
                         </tr>
-
+                    @else
+                        <tr ng-if="deals.length>0">
+                            <td>
+                                <span class="row">
+                                    <span class="col-xs-5">
+                                        <strong>
+                                            Total Pcs
+                                        </strong>
+                                    </span>
+                                    <span class="col-xs-7 text-right">
+                                        @{{getTotalPieces()}}
+                                    </span>
+                                </span>
+                                <span class="row">
+                                    <span class="col-xs-5">
+                                        <strong>
+                                            Total Qty
+                                        </strong>
+                                    </span>
+                                    <span class="col-xs-7 text-right">
+                                        @{{totalqtyModel}}
+                                    </span>
+                                </span>
+                                <span class="row">
+                                    <span class="col-xs-5">
+                                        <strong>
+                                            Total Amount
+                                        </strong>
+                                    </span>
+                                    <span class="col-xs-7 text-right">
+                                        <strong>
+                                            @{{totalModel}}
+                                        </strong>
+                                    </span>
+                                </span>
+                            </td>
+                        </tr>
+                    @endif
+                    <tr ng-show="(deals | filter:search).deals == 0 || ! deals.length">
+                        <td colspan="12" class="text-center">No Records Found!</td>
+                    </tr>
                 </table>
             </div>
         </div>

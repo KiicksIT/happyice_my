@@ -25,7 +25,7 @@
     <div class="panel-body">
         <div>
             <div class="table-responsive">
-                <table class="table table-list-search table-hover table-bordered table-condensed ">
+                <table class="table table-list-search table-hover table-bordered table-condensed hidden-xs">
                     <tr style="background-color: #DDFDF8;">
                         <th class="text-center" style="width:35%">
                             Item
@@ -91,7 +91,7 @@
             </div>
 
             <div>
-                <table class="table table-list-search table-hover table-bordered table-condensed" style="font-size: 15px;">
+                <table class="table table-list-search table-hover table-bordered table-condensed hidden-lg hidden-md hidden-sm" style="font-size: 15px;">
                     <tr style="background-color: #DDFDF8;">
                         <th class="text-center">
                             Item

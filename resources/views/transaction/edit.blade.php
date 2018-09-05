@@ -140,10 +140,13 @@
                         {!! Form::submit('Cancel Invoice', ['class'=> 'btn btn-danger', 'form'=>'form_delete', 'name'=>'form_delete']) !!}
                         @endif
                     </div>
-                    <div class="pull-right">
-
+                    <div class="pull-right hidden-xs">
                         {!! Form::submit('Confirm', ['name'=>'confirm', 'class'=> 'btn btn-primary', 'form'=>'form_cust']) !!}
                         <a href="/transaction" class="btn btn-default">Cancel</a>
+                    </div>
+                    <div class="hidden-lg hidden-md hidden-sm">
+                        {!! Form::submit('Confirm', ['name'=>'confirm', 'class'=> 'btn btn-primary btn-block', 'form'=>'form_cust']) !!}
+                        <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -156,7 +159,7 @@
                         @endif
                     </div>
 
-                    <div class="pull-right">
+                    <div class="pull-right hidden-xs">
                         @if(!auth()->user()->hasRole('franchisee') and $transaction->person->active != 'Pending')
                         {!! Form::submit('Delivered & Paid', ['name'=>'del_paid', 'class'=> 'btn btn-success', 'form'=>'form_cust', 'onclick'=>'clicked(event)' ]) !!}
                         {!! Form::submit('Delivered & Owe', ['name'=>'del_owe', 'class'=> 'btn btn-warning', 'form'=>'form_cust', 'onclick'=>'clicked(event)']) !!}
@@ -165,6 +168,17 @@
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary">Print</a>
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary">Send Inv Email</a>
                         <a href="/transaction" class="btn btn-default">Cancel</a>
+                    </div>
+
+                    <div class="hidden-lg hidden-md hidden-sm">
+                        @if(!auth()->user()->hasRole('franchisee') and $transaction->person->active != 'Pending')
+                        {!! Form::submit('Delivered & Paid', ['name'=>'del_paid', 'class'=> 'btn btn-success btn-block', 'form'=>'form_cust', 'onclick'=>'clicked(event)' ]) !!}
+                        {!! Form::submit('Delivered & Owe', ['name'=>'del_owe', 'class'=> 'btn btn-warning btn-block', 'form'=>'form_cust', 'onclick'=>'clicked(event)']) !!}
+                        @endif
+                        {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-default btn-block', 'form'=>'form_cust']) !!}
+                        <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary btn-block">Print</a>
+                        <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary btn-block">Send Inv Email</a>
+                        <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -180,7 +194,7 @@
                         @endcannot
                         @endcan
                     </div>
-                    <div class="pull-right">
+                    <div class="pull-right hidden-xs">
                         @if(!auth()->user()->hasRole('franchisee') and $transaction->person->active != 'Pending')
                         {!! Form::submit('Paid', ['name'=>'paid', 'class'=> 'btn btn-success', 'form'=>'form_cust', 'onclick'=>'clicked(event)']) !!}
                         @endif
@@ -189,12 +203,22 @@
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary">Send Inv Email</a>
                         <a href="/transaction" class="btn btn-default">Cancel</a>
                     </div>
+
+                    <div class="hidden-lg hidden-md hidden-sm">
+                        @if(!auth()->user()->hasRole('franchisee') and $transaction->person->active != 'Pending')
+                        {!! Form::submit('Paid', ['name'=>'paid', 'class'=> 'btn btn-success btn-block', 'form'=>'form_cust', 'onclick'=>'clicked(event)']) !!}
+                        @endif
+                        {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-default btn-block', 'form'=>'form_cust']) !!}
+                        <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary btn-block">Print</a>
+                        <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary btn-block">Send Inv Email</a>
+                        <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
+                    </div>
                 </div>
             </div>
             @elseif($state === 4)
             <div class="col-md-12">
                 <div class="row">
-                    <div class="pull-right">
+                    <div class="pull-right hidden-xs">
                         @cannot('transaction_view')
                         @if(!auth()->user()->hasRole('franchisee'))
                             {!! Form::submit('Delete Invoice', ['class'=> 'btn btn-danger', 'form'=>'form_delete', 'name'=>'form_wipe']) !!}
@@ -202,6 +226,16 @@
                         @endif
                         @endcan
                         <a href="/transaction" class="btn btn-default">Cancel</a>
+                    </div>
+
+                    <div class="hidden-lg hidden-md hidden-sm">
+                        @cannot('transaction_view')
+                        @if(!auth()->user()->hasRole('franchisee'))
+                            {!! Form::submit('Delete Invoice', ['class'=> 'btn btn-danger btn-block', 'form'=>'form_delete', 'name'=>'form_wipe']) !!}
+                            {!! Form::submit('Undo Cancel', ['class'=> 'btn btn-warning btn-block', 'form'=>'form_reverse', 'name'=>'form_reverse']) !!}
+                        @endif
+                        @endcan
+                        <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -220,7 +254,7 @@
                         @endcannot
                         {{-- @endcan --}}
                     </div>
-                    <div class="pull-right">
+                    <div class="pull-right hidden-xs">
                         @if(!auth()->user()->hasRole('franchisee'))
                         {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-warning', 'form'=>'form_cust']) !!}
                         @endif
@@ -228,17 +262,32 @@
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary">Print</a>
                         <a href="/transaction" class="btn btn-default">Cancel</a>
                     </div>
+                    <div class="hidden-lg hidden-md hidden-sm">
+                        @if(!auth()->user()->hasRole('franchisee'))
+                        {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-warning btn-block', 'form'=>'form_cust']) !!}
+                        @endif
+                        <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary btn-block">Send Inv Email</a>
+                        <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary btn-block">Print</a>
+                        <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
+                    </div>
                 </div>
             </div>
             @elseif($state === 6)
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="row">
-                    <div class="pull-right">
+                    <div class="pull-right hidden-xs">
                         <span class="bg-info" style="margin-right: 15px;">
                             <i class="fa fa-lock"></i>
                             This invoice has been locked
                         </span>
                         <a href="/transaction" class="btn btn-default">Cancel</a>
+                    </div>
+                    <div class="hidden-lg hidden-md hidden-sm">
+                        <span class="bg-info" style="margin-right: 15px;">
+                            <i class="fa fa-lock"></i>
+                            This invoice has been locked
+                        </span>
+                        <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
                     </div>
                 </div>
             </div>
