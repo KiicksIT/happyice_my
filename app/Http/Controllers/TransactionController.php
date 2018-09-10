@@ -307,7 +307,7 @@ class TransactionController extends Controller
     {
         // dynamic form arrays
         $quantities = $request->qty;
-        $amounts = $request->amount;
+        $amounts = $request->amounts;
         $quotes = $request->quote;
         $cartons = $request->ctn;
         $pieces = $request->pcs;
@@ -1034,27 +1034,49 @@ class TransactionController extends Controller
     // sync deals with email alert, deals and inventory deduction
     private function syncDeal($transaction, $cartons, $pieces, $amounts, $quotes, $status)
     {
-        if($amounts){
-            if(array_filter($amounts) != null){
+        if($cartons or $pieces){
+            if(array_filter($cartons) or array_filter($pieces)){
+
                 // create array of errors to fetch errors from loop if any
                 $errors = array();
                 foreach($amounts as $index => $amount){
+                    $item = Item::findOrFail($index);
 
+                    // dividend, divisor, qty init
                     $dividend = 0;
                     $divisor = 1;
+                    $qty = 0;
 
 
+                    if($item->is_inventory) {
+                        // set the divisor as the item base unit
+                        $divisor = $item->base_unit;
 
-                    if(strpos($qty, '/') !== false) {
-                        $dividend = explode('/', $qty)[0];
-                        $divisor = explode('/', $qty)[1];
-                        $qty = explode('/', $qty)[0]/ explode('/', $qty)[1];
+                        if($cartons[$index]) {
+                            $qty += $cartons[$index] * $divisor;
+                        }
+
+                        if($pieces[$index]) {
+                            $qty += $pieces[$index];
+                        }
+
+                        $dividend = $qty;
+                        $qty = $qty / $divisor;
+
                     }
 
-                    if($qty != NULL or $qty != 0 ){
-                        // inventory lookup before saving to deals
-                        $item = Item::findOrFail($index);
+                    if(!$item->is_inventory) {
+                        if($pieces[$index]) {
+                            $dividend = 1;
+                            $qty = $pieces[$index];
+                        }
+                    }
+
+                    if($cartons[$index] or $pieces[$index]){
+
+                        // lookup unit cost based on item id
                         $unitcost = Unitcost::whereItemId($item->id)->whereProfileId($transaction->person->profile_id)->first();
+
                         // inventory email notification for stock running low
                         if($item->email_limit and !$item->is_vending and $item->is_inventory){
                             if(($status == 1 and $this->calOrderEmailLimit($qty, $item)) or ($status == 2 and $this->calActualEmailLimit($qty, $item))){

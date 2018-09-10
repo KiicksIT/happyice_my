@@ -262,7 +262,8 @@ class PriceController extends Controller
                 'items.name',
                 'items.remark',
                 'items.base_unit',
-                'items.is_inventory'
+                'items.is_inventory',
+                'items.id AS item_id'
             )
             ->where('people.id', $person_id)
             ->where('items.is_active', 1)
