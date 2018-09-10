@@ -309,6 +309,8 @@ class TransactionController extends Controller
         $quantities = $request->qty;
         $amounts = $request->amount;
         $quotes = $request->quote;
+        $cartons = $request->ctn;
+        $pieces = $request->pcs;
         $transaction = Transaction::findOrFail($id);
         // find out deals created
         $deals = Deal::where('transaction_id', $transaction->id)->get();
@@ -359,7 +361,7 @@ class TransactionController extends Controller
 
         }elseif($request->input('confirm')){
             // confirmation must with the entries start
-            if(array_filter($quantities) != null and array_filter($amounts) != null) {
+            if(array_filter($amounts) != null) {
                 $request->merge(array('status' => 'Confirmed'));
             }else{
                 Flash::error('The list cannot be empty upon confirmation');
@@ -449,9 +451,9 @@ class TransactionController extends Controller
 
         //Qty insert to on order upon confirmed(1) transaction status
         if($transaction->status === 'Confirmed'){
-            $this->syncDeal($transaction, $quantities, $amounts, $quotes, 1);
+            $this->syncDeal($transaction, $cartons, $pieces, $amounts, $quotes, 1);
         }else if($transaction->status === 'Delivered' or $transaction->status === 'Verified Owe' or $transaction->status === 'Verified Paid'){
-            $this->syncDeal($transaction, $quantities, $amounts, $quotes, 2);
+            $this->syncDeal($transaction, $cartons, $pieces, $amounts, $quotes, 2);
         }
 
         if($transaction->person->cust_id[0] === 'D'){
@@ -1030,16 +1032,18 @@ class TransactionController extends Controller
     }
 
     // sync deals with email alert, deals and inventory deduction
-    private function syncDeal($transaction, $quantities, $amounts, $quotes, $status)
+    private function syncDeal($transaction, $cartons, $pieces, $amounts, $quotes, $status)
     {
-        if($quantities and $amounts){
-            if(array_filter($quantities) != null and array_filter($amounts) != null){
+        if($amounts){
+            if(array_filter($amounts) != null){
                 // create array of errors to fetch errors from loop if any
                 $errors = array();
-                foreach($quantities as $index => $qty){
+                foreach($amounts as $index => $amount){
 
                     $dividend = 0;
                     $divisor = 1;
+
+
 
                     if(strpos($qty, '/') !== false) {
                         $dividend = explode('/', $qty)[0];
@@ -1505,8 +1509,8 @@ class TransactionController extends Controller
             $transactions = $transactions->whereIn('people.franchisee_id', [auth()->user()->master_franchisee_id]);
         } else if(request('franchisee_id')) {
             $transactions = $transactions->where('people.franchisee_id', request('franchisee_id'));
-        }        
-       
+        }
+
         if(request('sortName')){
             $transactions = $transactions->orderBy(request('sortName'), request('sortBy') ? 'asc' : 'desc');
         }
