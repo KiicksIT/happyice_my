@@ -12,12 +12,9 @@ class AddCtnPcsDeals extends Migration
      */
     public function up()
     {
-        Schema::table('vendings', function ($table) {
-            // $table->string('vend_id')->nullable();
-            // $table->string('name')->nullable();
-            // $table->string('serial_no');
-            // $table->string('router')->nullable();
-            // $table->text('desc')->nullable();
+        Schema::table('deals', function ($table) {
+            $table->integer('ctn');
+            $table->integer('pcs');
         });
     }
 
@@ -28,12 +25,9 @@ class AddCtnPcsDeals extends Migration
      */
     public function down()
     {
-        Schema::table('vendings', function ($table) {
-            // $table->dropColumn('vend_id');
-            // $table->dropColumn('name');
-            // $table->dropColumn('serial_no');
-            // $table->dropColumn('router');
-            // $table->dropColumn('desc');
+        Schema::table('deals', function ($table) {
+            $table->dropColumn('ctn');
+            $table->dropColumn('pcs');
         });
     }
 }

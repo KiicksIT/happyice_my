@@ -248,19 +248,24 @@
                             <th class="col-xs-6 text-center">
                                 Description
                             </th>
-                            <th class="col-xs-2 text-center">
+                            <th class="col-xs-1 text-center">
                                 @if($transaction->is_vending_generate)
                                     Sales
                                 @else
-                                    Quantity
+                                    Ctn
                                 @endif
                             </th>
+                            @if(!$transaction->is_vending_generate)
+                            <th class="col-xs-1 text-center">
+                                Pcs
+                            </th>
+                            @endif
                             <th class="col-xs-1 text-center">
                                 @if($transaction->is_vending_generate)
                                     Percent
                                 @else
                                     Price/Unit ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
-                                @endif                                
+                                @endif
                             </th>
                             <th class="col-xs-1 text-center">
                                 Amount ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
@@ -300,11 +305,17 @@
                                 </td>
 
                                 @if($deal->divisor and $deal->item->is_inventory === 1)
-                                    <td class="col-xs-2 text-right">
+{{--                                     <td class="col-xs-2 text-right">
                                         {{ $deal->divisor == 1 ? $deal->qty + 0 : ($deal->dividend + 0).'/'.($deal->divisor + 0)}} {{ $deal->item->unit }}
+                                    </td> --}}
+                                    <td class="col-xs-1 text-right">
+                                        {{$deal->ctn}}
+                                    </td>
+                                    <td class="col-xs-1 text-right">
+                                        {{$deal->pcs}}
                                     </td>
                                 @elseif($deal->item->is_inventory === 0)
-                                    <td class="col-xs-2 text-left">
+                                    <td class="col-xs-1 text-left" colspan="2">
                                         @if($deal->dividend === 1)
                                             1 Unit
                                         @else
@@ -312,7 +323,7 @@
                                         @endif
                                     </td>
                                 @else
-                                    <td class="col-xs-2 text-right">
+                                    <td class="col-xs-1 text-right">
                                         {{ $deal->qty + 0 }}
                                     </td>
                                 @endif
@@ -371,7 +382,7 @@
                             <td colspan="2" class="text-right">
                                 <strong>Delivery Fee</strong>
                             </td>
-                            <td colspan="2"></td>
+                            <td colspan="3"></td>
                             <td class="text-right">
                                 {{ number_format(($transaction->delivery_fee), 2)}}
                             </td>
@@ -383,7 +394,7 @@
                                 <td colspan="2" class="text-right">
                                     <strong>Total</strong>
                                 </td>
-                                <td class="col-xs-2 text-right">
+                                <td class="col-xs-3 text-right">
                                     {{$totalqty}}
                                 </td>
                                 <td></td>
@@ -395,7 +406,7 @@
                                 <td colspan="2" class="text-right">
                                     <strong>GST ({{$transaction->gst_rate + 0}}%)</strong>
                                 </td>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td class="text-right">
                                     {{$gst}}
                                 </td>
@@ -404,7 +415,7 @@
                                 <td colspan="2" class="text-right">
                                     <strong>Exclude GST</strong>
                                 </td>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td class="text-right">
                                     {{$subtotal}}
                                 </td>
@@ -414,7 +425,7 @@
                                 <td colspan="2" class="text-right">
                                     <strong>SubTotal</strong>
                                 </td>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td class="text-right">
                                     {{$subtotal}}
                                 </td>
@@ -423,7 +434,7 @@
                                 <td colspan="2" class="text-right">
                                     <strong>GST ({{$transaction->gst_rate + 0}}%)</strong>
                                 </td>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td class="text-right">
                                     {{$gst}}
                                 </td>
@@ -432,7 +443,7 @@
                                 <td colspan="2" class="text-right">
                                     <strong>Total</strong>
                                 </td>
-                                <td class="col-xs-1 text-right">
+                                <td class="text-right" colspan="2">
                                     {{$totalqty}}
                                 </td>
                                 <td></td>
@@ -445,7 +456,7 @@
                                 <td colspan="2" class="text-right">
                                     <strong>Total</strong>
                                 </td>
-                                <td class="col-xs-1 text-right">
+                                <td class="text-right" colspan="2">
                                     {{$totalqty}}
                                 </td>
                                 <td></td>

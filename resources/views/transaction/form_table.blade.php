@@ -58,10 +58,10 @@
                             </small>
                         </td>
                         <td style="width:10%">
-                            <input type="text" name="ctn[@{{price.item_id}}]" ng-model="price.ctn" style="max-width: 100px;" class="text-right form-control" autocomplete="off_string" ng-readonly="!price.is_inventory"/>
+                            <input type="text" name="ctn[@{{price.item_id}}]" ng-model="price.ctn" style="max-width: 100px;" class="text-right form-control" autocomplete="off_string"/>
                         </td>
                         <td style="width:10%">
-                            <input type="text" name="pcs[@{{price.item_id}}]" ng-model="price.pcs" style="max-width: 100px;" class="text-right form-control" autocomplete="off_string" />
+                            <input type="text" name="pcs[@{{price.item_id}}]" ng-model="price.pcs" style="max-width: 100px;" class="text-right form-control" autocomplete="off_string" ng-readonly="!price.is_inventory"/>
                         </td>
                         <td style="width:15%">
                             <input type="text" name="retail[@{{price.item_id}}]" ng-model="price.retail_price" class="text-right form-control" autocomplete="off_string" readonly="readonly" />
@@ -114,11 +114,11 @@
                             <span class="row">
                                 <span class="col-xs-6">
                                     <label for="ctn" class="form-label">Ctn</label>
-                                    <input type="text" name="ctn[@{{price.item_id}}]" ng-model="price.ctn"  class="text-right form-control" autocomplete="off_string" ng-readonly="!price.is_inventory"/>
+                                    <input type="text" name="ctn[@{{price.item_id}}]" ng-model="price.ctn"  class="text-right form-control" autocomplete="off_string"/>
                                 </span>
                                 <span class="col-xs-6">
                                     <label for="pcs" class="form-label">Pcs</label>
-                                    <input type="text" name="pcs[@{{price.item_id}}]" ng-model="price.pcs" class="text-right form-control" autocomplete="off_string" />
+                                    <input type="text" name="pcs[@{{price.item_id}}]" ng-model="price.pcs" class="text-right form-control" autocomplete="off_string" ng-readonly="!price.is_inventory"/>
                                 </span>
                             </span>
                             <span class="row">

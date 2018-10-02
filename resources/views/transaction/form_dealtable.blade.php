@@ -28,13 +28,13 @@
                             Description
                         </th>
                         <th class="col-md-1 text-center">
-                            Pieces
+                            Ctn
                         </th>
                         <th class="col-md-1 text-center">
-                            Quantity
+                            Pcs
                         </th>
                         <th class="col-md-1 text-center">
-                            Unit Price
+                            Unit Price (ctn)
                         </th>
                         <th class="col-md-1 text-center">
                             Amount
@@ -46,25 +46,21 @@
 
                     <tbody>
                         <tr ng-repeat="deal in deals">
-                            <td class="col-md-1 text-center">@{{ $index + 1 }}</td>
-                            <td class="col-md-1 text-center">@{{ deal.product_id }}</td>
-                            <td class="col-md-5">@{{ deal.item_name }}<br> <small>@{{ deal.item_remark }}</small></td>
-                            <td class="col-md-1 text-right">@{{ deal.pieces }}</td>
-                            <td class="col-md-2 @{{deal.is_inventory===1 ? 'text-right' : 'text-left'}}">
-                                <span ng-if="!deal.divisor && deal.is_inventory === 1">
-                                    @{{ deal.qty % 1 == 0 ? Math.round(deal.qty) : deal.qty }} @{{ deal.unit }}
-                                </span>
-                                <span ng-if="(deal.divisor != 1.00 && deal.divisor != null)  && deal.is_inventory == 1">
-                                    @{{deal.dividend | removeZero}} / @{{deal.divisor | removeZero}}
-                                </span>
-                                <span ng-if="deal.divisor == 1.00 && deal.is_inventory == 1">
-                                    @{{deal.qty}}
-                                </span>
-                                <span ng-if="deal.is_inventory === 0 && deal.dividend == 1.00">
-                                    1 Unit
-                                </span>
-                                <span ng-if="deal.is_inventory === 0 && deal.dividend != 1.00">
-                                    @{{deal.dividend | removeZero}} Unit
+                            <td class="col-md-1 text-center">
+                                @{{ $index + 1 }}
+                            </td>
+                            <td class="col-md-1 text-center">
+                                @{{ deal.product_id }}
+                            </td>
+                            <td class="col-md-5">
+                                @{{ deal.item_name }}<br> <small>@{{ deal.item_remark }}</small>
+                            </td>
+                            <td class="col-md-1 text-right">
+                                @{{ deal.ctn }}
+                            </td>
+                            <td class="col-md-1 text-right">
+                                <span ng-if="deal.is_inventory">
+                                    @{{ (deal.pcs || deal.ctn) ? deal.pcs : deal.pieces }}
                                 </span>
                             </td>
                             {{-- unit price --}}
@@ -130,10 +126,7 @@
                                 <td colspan="3" class="text-right">
                                     <strong>Total</strong>
                                 </td>
-                                <td class="col-md-1 text-right">
-                                    @{{getTotalPieces()}}
-                                </td>
-                                <td class="col-md-1 text-right">
+                                <td class="col-md-1 text-right" colspan="2">
                                     <strong>@{{totalqtyModel}}</strong>
                                 </td>
                                 <td colspan="1"></td>
@@ -145,8 +138,7 @@
                                 <td colspan="3" class="text-right">
                                     <strong>GST ({{number_format($transaction->gst_rate)}}%)</strong>
                                 </td>
-                                <td></td>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td class="col-md-1 text-right">
                                     @{{taxModel | currency: ""}}
                                 </td>
@@ -155,8 +147,7 @@
                                 <td colspan="3" class="text-right">
                                     <strong>Exclude GST</strong>
                                 </td>
-                                <td></td>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td class="col-md-1 text-right">
                                     @{{subtotalModel | currency: ""}}
                                 </td>
@@ -166,8 +157,7 @@
                                 <td colspan="3" class="text-right">
                                     <strong>Subtotal</strong>
                                 </td>
-                                <td></td>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td class="col-md-1 text-right">
                                     @{{subtotalModel}}
                                 </td>
@@ -176,8 +166,7 @@
                                 <td colspan="3" class="text-right">
                                     <strong>GST ({{number_format($transaction->gst_rate)}}%)</strong>
                                 </td>
-                                <td></td>
-                                <td colspan="2"></td>
+                                <td colspan="3"></td>
                                 <td class="col-md-1 text-right">
                                     @{{taxModel}}
                                 </td>
@@ -186,10 +175,7 @@
                                 <td colspan="3" class="text-right">
                                     <strong>Total</strong>
                                 </td>
-                                <td class="col-md-1 text-right">
-                                    @{{getTotalPieces()}}
-                                </td>
-                                <td class="col-md-1 text-right">
+                                <td class="text-right" colspan="2">
                                     <strong>@{{totalqtyModel}}</strong>
                                 </td>
                                 <td colspan="1"></td>
@@ -280,7 +266,7 @@
                             <span class="row">
                                 <span class="col-xs-5">
                                     <strong>
-                                        Unit Price
+                                        Unit Price (ctn)
                                     </strong>
                                 </span>
                                 <span class="col-xs-7 text-right">

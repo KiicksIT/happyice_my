@@ -240,7 +240,7 @@ class TransactionController extends Controller
                     ->leftJoin('profiles', 'profiles.id', '=', 'people.profile_id')
                     ->leftJoin('items', 'items.id', '=', 'deals.item_id')
                     ->select(
-                                'deals.transaction_id', 'deals.dividend', 'deals.divisor', 'deals.qty', 'deals.unit_price', 'deals.amount', 'deals.id AS deal_id',
+                                'deals.transaction_id', 'deals.dividend', 'deals.divisor', 'deals.qty', 'deals.unit_price', 'deals.amount', 'deals.id AS deal_id', 'deals.ctn', 'deals.pcs',
                                 'items.id AS item_id', 'items.product_id', 'items.name AS item_name', 'items.remark AS item_remark', 'items.is_inventory', 'items.unit',
                                 'people.cust_id', 'people.company', 'people.name', 'people.id as person_id',
                                 'transactions.del_postcode', 'transactions.status', 'transactions.delivery_date', 'transactions.driver',
@@ -1047,10 +1047,12 @@ class TransactionController extends Controller
                     $divisor = 1;
                     $qty = 0;
 
-
                     if($item->is_inventory) {
+                        // dd($item->toArray(), $amount, $cartons[$index], $pieces[$index]);
                         // set the divisor as the item base unit
-                        $divisor = $item->base_unit;
+                        if($item->base_unit) {
+                            $divisor = $item->base_unit;
+                        }
 
                         if($cartons[$index]) {
                             $qty += $cartons[$index] * $divisor;
@@ -1065,10 +1067,11 @@ class TransactionController extends Controller
 
                     }
 
+
                     if(!$item->is_inventory) {
-                        if($pieces[$index]) {
+                        if($cartons[$index]) {
                             $dividend = 1;
-                            $qty = $pieces[$index];
+                            $qty = $cartons[$index];
                         }
                     }
 
@@ -1106,6 +1109,8 @@ class TransactionController extends Controller
                                 $deal->amount = $amounts[$index];
                                 $deal->unit_price = $quotes[$index];
                                 $deal->qty_status = $status;
+                                $deal->ctn = $cartons[$index];
+                                $deal->pcs = $pieces[$index];
                                 if($unitcost) {
                                     $deal->unit_cost = $unitcost->unit_cost;
                                 }
@@ -1127,6 +1132,8 @@ class TransactionController extends Controller
                                 $deal->amount = $amounts[$index];
                                 $deal->unit_price = $quotes[$index];
                                 $deal->qty_status = $status;
+                                $deal->ctn = $cartons[$index];
+                                $deal->pcs = $pieces[$index];
                                 if($unitcost) {
                                     $deal->unit_cost = $unitcost->unit_cost;
                                 }
