@@ -189,10 +189,10 @@
                                     <strong>Total</strong>
                                 </td>
                                 <td class="col-md-1 text-right">
-                                    @{{getTotalPieces()}}
+                                    <strong>@{{totalqtyModel}}</strong>
                                 </td>
                                 <td class="col-md-1 text-right">
-                                    <strong>@{{totalqtyModel}}</strong>
+                                    @{{getTotalPieces()}}
                                 </td>
                                 <td colspan="1"></td>
                                 <td class="col-md-1 text-right">

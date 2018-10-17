@@ -292,65 +292,65 @@
                                     $counter += 1;
                                 @endphp
 
-                            @if( $counter >= 16)
-                            <tr style="page-break-inside: always">
-                            @else
-                            <tr>
-                            @endif
-                                <td class="col-xs-1 text-center">
-                                    {{ $deal->item->product_id }}
-                                </td>
-                                <td class="col-xs-6">
-                                    {{ $deal->item->name}} {{ $deal->item->remark }}
-                                </td>
+                                @if( $counter >= 16)
+                                <tr style="page-break-inside: always">
+                                @else
+                                <tr>
+                                @endif
+                                    <td class="col-xs-1 text-center">
+                                        {{ $deal->item->product_id }}
+                                    </td>
+                                    <td class="col-xs-6">
+                                        {{ $deal->item->name}} {{ $deal->item->remark }}
+                                    </td>
 
-                                @if($deal->divisor and $deal->item->is_inventory === 1)
-{{--                                     <td class="col-xs-2 text-right">
-                                        {{ $deal->divisor == 1 ? $deal->qty + 0 : ($deal->dividend + 0).'/'.($deal->divisor + 0)}} {{ $deal->item->unit }}
-                                    </td> --}}
+                                    @if($deal->divisor and $deal->item->is_inventory === 1)
+    {{--                                     <td class="col-xs-2 text-right">
+                                            {{ $deal->divisor == 1 ? $deal->qty + 0 : ($deal->dividend + 0).'/'.($deal->divisor + 0)}} {{ $deal->item->unit }}
+                                        </td> --}}
+                                        <td class="col-xs-1 text-right">
+                                            {{$deal->ctn}}
+                                        </td>
+                                        <td class="col-xs-1 text-right">
+                                            {{$deal->ctn || $deal->pcs ? $deal->pcs : $deal->dividend + 0}}
+                                        </td>
+                                    @elseif($deal->item->is_inventory === 0)
+                                        <td class="col-xs-1 text-left" colspan="2">
+                                            @if($deal->dividend === 1)
+                                                1 Unit
+                                            @else
+                                                {{$deal->dividend + 0}} Unit
+                                            @endif
+                                        </td>
+                                    @else
+                                        <td class="col-xs-1 text-right">
+                                            {{ $deal->qty + 0 }}
+                                        </td>
+                                    @endif
+
+                                    @if($deal->unit_price == 0 || $deal->unit_price == null)
                                     <td class="col-xs-1 text-right">
-                                        {{$deal->ctn}}
-                                    </td>
-                                    <td class="col-xs-1 text-right">
-                                        {{$deal->pcs}}
-                                    </td>
-                                @elseif($deal->item->is_inventory === 0)
-                                    <td class="col-xs-1 text-left" colspan="2">
-                                        @if($deal->dividend === 1)
-                                            1 Unit
+                                        @if($deal->qty != 0)
+                                            {{ number_format(($deal->amount / $deal->qty), 2)}}
                                         @else
-                                            {{$deal->dividend + 0}} Unit
+                                            {{ number_format(($deal->amount), 2)}}
                                         @endif
                                     </td>
-                                @else
-                                    <td class="col-xs-1 text-right">
-                                        {{ $deal->qty + 0 }}
-                                    </td>
-                                @endif
-
-                                @if($deal->unit_price == 0 || $deal->unit_price == null)
-                                <td class="col-xs-1 text-right">
-                                    @if($deal->qty != 0)
-                                        {{ number_format(($deal->amount / $deal->qty), 2)}}
                                     @else
-                                        {{ number_format(($deal->amount), 2)}}
+                                    <td class="col-xs-1 text-right">
+                                        {{ number_format($deal->unit_price, 2) }}
+                                    </td>
                                     @endif
-                                </td>
-                                @else
-                                <td class="col-xs-1 text-right">
-                                    {{ number_format($deal->unit_price, 2) }}
-                                </td>
-                                @endif
-                                @if($deal->amount != 0)
-                                <td class="col-xs-1 text-right">
-                                    {{ number_format($deal->amount, 2) }}
-                                </td>
-                                @else
-                                <td class="col-xs-1 text-right">
-                                    <strong>FOC</strong>
-                                </td>
-                                @endif
-                            </tr>
+                                    @if($deal->amount != 0)
+                                    <td class="col-xs-1 text-right">
+                                        {{ number_format($deal->amount, 2) }}
+                                    </td>
+                                    @else
+                                    <td class="col-xs-1 text-right">
+                                        <strong>FOC</strong>
+                                    </td>
+                                    @endif
+                                </tr>
                             @endforeach
 
                         @php
