@@ -98,7 +98,7 @@ class InventoryController extends Controller
 
         if(array_filter($incomingQty)){
 
-            if($this->createInvRecord($inventory->id, $currentQty, $incomingQty, $afterQty)){
+            // if($this->createInvRecord($inventory->id, $currentQty, $incomingQty, $afterQty)){
 
                 // store all the history total into inventory
                 // qtytotal_current used to record original entry
@@ -114,13 +114,13 @@ class InventoryController extends Controller
 
                 return redirect('item');
 
-            }else{
+            // }else{
 
-                Flash::error('Item Current Qty must not become negative');
+                // Flash::error('Item Current Qty must not become negative');
 
-                return Redirect::action('InventoryController@edit', $inventory->id);
+                // return Redirect::action('InventoryController@edit', $inventory->id);
 
-            }
+            // }
 
         }else{
 
