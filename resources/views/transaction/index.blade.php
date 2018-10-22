@@ -228,7 +228,7 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-xs-12">
                         <button class="btn btn-primary" ng-click="exportData($event)">Export Excel</button>
-                        @if(auth()->user()->hasRole('admin'))
+                        @if(auth()->user()->hasRole('admin') or auth()->user()->hasRole('accountadmin'))
                             <button class="btn btn-default" ng-click="enableAccConsolidate($event)">
                                 Export Acc Consolidate
                                 <span ng-if="!show_acc_consolidate_div" class="fa fa-caret-down"></span>
