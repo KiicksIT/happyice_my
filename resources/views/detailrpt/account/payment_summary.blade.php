@@ -111,7 +111,7 @@
                     ])
                 !!}
             </div>
-        </div>        
+        </div>
         <div class="col-md-4 col-xs-6 text-right">
             <div class="row">
             <label for="display_num">Display</label>
@@ -135,8 +135,10 @@
         {{-- <button class="btn btn-primary" ng-click="exportData()"><i class="fa fa-file-excel-o"></i><span class="hidden-xs"> Export Excel</span></button> --}}
         <button class="btn btn-primary" type="submit" form="export_excel" name="export_excel" value="export_excel"><i class="fa fa-file-excel-o"></i><span class="hidden-xs"> Export Excel</span></button>
         <button class="btn btn-success" type="submit" form="submit_form" name="submitbtn" value="submit"><i class="fa fa-pencil-square-o"></i><span class="hidden-xs"> Batch Update</span></button>
-        <button class="btn btn-success" type="submit" form="submit_form" name="submitbtn" value="verify"><i class="fa fa-check"></i><span class="hidden-xs"> Batch Verify</span></button>
-        <button class="btn btn-danger" type="submit" form="submit_form" name="submitbtn" value="reject"><i class="fa fa-times"></i><span class="hidden-xs"> Batch Reject</span></button>
+        @if(auth()->user()->hasRole('admin') or auth()->user()->hasRole('account'))
+            <button class="btn btn-success" type="submit" form="submit_form" name="submitbtn" value="verify"><i class="fa fa-check"></i><span class="hidden-xs"> Batch Verify</span></button>
+            <button class="btn btn-danger" type="submit" form="submit_form" name="submitbtn" value="reject"><i class="fa fa-times"></i><span class="hidden-xs"> Batch Reject</span></button>
+        @endif
         <span ng-show="spinner"> <i style="color:red;" class="fa fa-spinner fa-2x fa-spin"></i></span>
     </div>
 </div>
@@ -276,7 +278,7 @@
                     Validation
                     <span ng-if="search.sortName == 'is_verified' && !search.sortBy" class="fa fa-caret-down"></span>
                     <span ng-if="search.sortName == 'is_verified' && search.sortBy" class="fa fa-caret-up"></span>
-                </th>                
+                </th>
             </tr>
             <tbody>
                 <tr dir-paginate="transaction in alldata | itemsPerPage:itemsPerPage | orderBy:sortType:sortReverse" pagination-id="payment_summary" total-items="totalCount">
