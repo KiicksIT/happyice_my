@@ -100,6 +100,7 @@ class InventoryController extends Controller
 
             // if($this->createInvRecord($inventory->id, $currentQty, $incomingQty, $afterQty)){
 
+                $this->createInvRecord($inventory->id, $currentQty, $incomingQty, $afterQty);
                 // store all the history total into inventory
                 // qtytotal_current used to record original entry
                 $inventory->qtytotal_current = array_sum($currentQty);
@@ -386,11 +387,11 @@ class InventoryController extends Controller
                 $rec->qtyrec_after = $afterQty[$index];
 
                 // check whether the summation smaller than zero or not
-                if($currentQty[$index] + $incomingQty[$index] < 0){
+/*                 if($currentQty[$index] + $incomingQty[$index] < 0){
 
                     return false;
 
-                }else{
+                }else{ */
 
                     $rec->save();
 
@@ -400,7 +401,7 @@ class InventoryController extends Controller
 
                     $item->save();
 
-                }
+                // }
             }
 
         }
