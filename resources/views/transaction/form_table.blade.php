@@ -25,51 +25,54 @@
     <div class="panel-body">
         <div>
             <div class="table-responsive">
-                <table class="table table-list-search table-hover table-bordered table-condensed hidden-xs">
+                <table class="table table-list-search table-hover table-bordered table-condensed">
                     <tr style="background-color: #DDFDF8;">
-                        <th class="text-center" style="width:35%">
+                        <th class="text-center" >
                             Item
                         </th>
-                        <th class="text-center" style="width:10%">
+                        <th class="text-center">
                             Ctn
                         </th>
-                        <th class="text-center" style="width:10%">
+                        <th class="text-center" >
                             Pieces
                         </th>
-                        <th class="text-center" style="width:15%">
+                        <th class="text-center" >
                             Retail ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
                         </th>
-                        <th class="text-center" style="width:15%">
+                        <th class="text-center" >
                             Quote ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
                         </th>
-                         <th class="text-center" style="width:15%">
+                         <th class="text-center">
                             Amount ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
                         </th>
                     </tr>
 
                     <tr ng-repeat="price in prices">
-                        <td style="width:35%">
-                            <strong>
-                                @{{price.product_id}}
-                            </strong>
-                            - @{{price.name}}
-                            <small>
-                               <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @{{price.remark}}
-                            </small>
+                        <td class="col-md-4 col-xs-2 ">
+                            <span class="hidden-xs">
+                                <strong>@{{price.product_id}}</strong>
+                                - @{{price.name}}
+                                <small>@{{price.remark}}</small>
+                            </span>
+                            <span class="hidden-lg hidden-md hidden-sm">
+                                <strong>@{{price.product_id}}</strong><br>
+                                @{{price.name}}<br>
+                                <small>@{{price.remark}}</small>
+                            </span>
                         </td>
-                        <td style="width:10%">
-                            <input type="text" name="ctn[@{{price.item_id}}]" ng-model="price.ctn" style="max-width: 100px;" class="text-right form-control" autocomplete="off_string"/>
+                        <td class="col-md-1 col-xs-2">
+                            <input type="text" name="ctn[@{{price.item_id}}]" ng-model="price.ctn" style="min-width: 70px; max-width: 100px;" class="text-right form-control" autocomplete="off_string"/>
                         </td>
-                        <td style="width:10%">
-                            <input type="text" name="pcs[@{{price.item_id}}]" ng-model="price.pcs" style="max-width: 100px;" class="text-right form-control" autocomplete="off_string" ng-readonly="!price.is_inventory"/>
+                        <td class="col-md-1 col-xs-2">
+                            <input type="text" name="pcs[@{{price.item_id}}]" ng-model="price.pcs" style="min-width: 70px; max-width: 100px;" class="text-right form-control" autocomplete="off_string" ng-readonly="!price.is_inventory"/>
                         </td>
-                        <td style="width:15%">
+                        <td class="col-md-2 col-xs-2">
                             <input type="text" name="retail[@{{price.item_id}}]" ng-model="price.retail_price" class="text-right form-control" autocomplete="off_string" readonly="readonly" />
                         </td>
-                        <td style="width:15%">
-                            <input type="text" name="quote[@{{price.item_id}}]" ng-model="price.quote_price" class="text-right form-control" autocomplete="off_string" />
+                        <td class="col-md-2 col-xs-2">
+                            <input type="text" name="quote[@{{price.item_id}}]" ng-model="price.quote_price" style="min-width: 70px;" class="text-right form-control" autocomplete="off_string" />
                         </td>
-                        <td style="width:15%">
+                        <td class="col-md-2 col-xs-2">
                             <input type="text" name="amounts[@{{price.item_id}}]" ng-model="price.amount" ng-value="getAmount(price)" class="text-right form-control" readonly="readonly"/>
                         </td>
                     </tr>
@@ -91,7 +94,7 @@
             </div>
 
             <div>
-                <table class="table table-list-search table-hover table-bordered table-condensed hidden-lg hidden-md hidden-sm" style="font-size: 15px;">
+                <table class="table table-list-search table-hover table-bordered table-condensed hidden" style="font-size: 15px;">
                     <tr style="background-color: #DDFDF8;">
                         <th class="text-center">
                             Item

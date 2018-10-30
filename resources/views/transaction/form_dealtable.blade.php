@@ -16,7 +16,7 @@
 
         <div class="panel-body">
             <div class="table-responsive">
-                <table class="table table-list-search table-hover table-bordered hidden-xs">
+                <table class="table table-list-search table-hover table-bordered">
                     <tr style="background-color: #DDFDF8">
                         <th class="col-md-1 text-center">
                             #
@@ -209,7 +209,7 @@
             </div>
 
             <div style="font-size: 15px;">
-                <table class="table table-list-search table-hover table-bordered table-condensed hidden-lg hidden-md hidden-sm">
+                <table class="table table-list-search table-hover table-bordered table-condensed hidden">
                     <tr style="background-color: #DDFDF8">
                         <th class="text-center">
                             Item

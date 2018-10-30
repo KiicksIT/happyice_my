@@ -109,7 +109,6 @@ function transactionController($scope, $http) {
 
     function loadDealTable() {
         $http.get('/api/transaction/edit/' + $trans_id.val()).success(function (data) {
-            console.log(data);
             $scope.delivery = data.delivery_fee;
             $scope.deals = data.deals;
             $scope.totalModel = data.total;

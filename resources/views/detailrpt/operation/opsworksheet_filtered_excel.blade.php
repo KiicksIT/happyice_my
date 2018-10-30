@@ -7,7 +7,7 @@
         <th>#</th>
         <th>Address Postcode Singapore</th>
         <th>Postcode Singapore</th>
-        <th>Postcode + Cust ID + ID Name</th>
+        <th>Cust ID + ID Name</th>
         <th>Inv#</th>
         <th>Ops Note</th>
         @foreach($dates as $date)
@@ -24,7 +24,7 @@
             <td>{{$indexpeople + 1}}</td>
             <td>{{$person->del_address}} {{$person->del_postcode}} Singapore</td>
             <td>{{$person->del_postcode}} Singapore</td>
-            <td>{{$person->del_postcode}} {{$person->cust_id}} {{$person->company}}</td>
+            <td>{{$person->cust_id}} {{$person->company}}</td>
             @php
                 $transactionsStr = '';
                 $transArr = [];
