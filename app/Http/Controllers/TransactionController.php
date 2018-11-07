@@ -1114,7 +1114,7 @@ class TransactionController extends Controller
                                 if($unitcost) {
                                     $deal->unit_cost = $unitcost->unit_cost;
                                 }
-                                if($item->is_inventory) {
+                                if($item->is_inventory and $item->product_id != '051b') {
                                     $deal->qty = $qty;
                                 }
                                 $deal->save();
@@ -1137,7 +1137,7 @@ class TransactionController extends Controller
                                 if($unitcost) {
                                     $deal->unit_cost = $unitcost->unit_cost;
                                 }
-                                if($item->is_inventory) {
+                                if($item->is_inventory and $item->product_id != '051b') {
                                     $deal->qty = $qty;
                                     $deal->qty_before = $item->qty_now;
                                     $item->qty_now -= strstr($qty, '/') ? $this->fraction($qty) : $qty;

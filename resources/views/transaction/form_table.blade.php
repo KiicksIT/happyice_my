@@ -48,7 +48,7 @@
                     </tr>
 
                     <tr ng-repeat="price in prices">
-                        <td class="col-md-4 col-xs-2 ">
+                        <td class="col-md-4 col-xs-1" >
                             <span class="hidden-xs">
                                 <strong>@{{price.product_id}}</strong>
                                 - @{{price.name}}
@@ -72,7 +72,7 @@
                         <td class="col-md-2 col-xs-2">
                             <input type="text" name="quote[@{{price.item_id}}]" ng-model="price.quote_price" style="min-width: 70px;" class="text-right form-control" autocomplete="off_string" />
                         </td>
-                        <td class="col-md-2 col-xs-2">
+                        <td class="col-md-2 col-xs-3">
                             <input type="text" name="amounts[@{{price.item_id}}]" ng-model="price.amount" ng-value="getAmount(price)" class="text-right form-control" readonly="readonly"/>
                         </td>
                     </tr>
