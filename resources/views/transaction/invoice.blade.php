@@ -262,7 +262,7 @@
                             @endif
                             <th class="col-xs-1 text-center">
                                 @if($transaction->is_vending_generate)
-                                    Percent
+                                    Percent/ Unit
                                 @else
                                     Price/Unit ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
                                 @endif
@@ -305,27 +305,38 @@
                                     </td>
 
                                     @if($deal->divisor and $deal->item->is_inventory === 1)
-    {{--                                     <td class="col-xs-2 text-right">
-                                            {{ $deal->divisor == 1 ? $deal->qty + 0 : ($deal->dividend + 0).'/'.($deal->divisor + 0)}} {{ $deal->item->unit }}
-                                        </td> --}}
-                                        <td class="col-xs-1 text-right">
-                                            {{$deal->ctn}}
-                                        </td>
-                                        <td class="col-xs-1 text-right">
-                                            {{$deal->ctn || $deal->pcs ? $deal->pcs : $deal->dividend + 0}}
-                                        </td>
+                                        @if(!$transaction->is_vending_generate)
+                                            <td class="col-xs-1 text-right">
+                                                {{$deal->ctn}}
+                                            </td>
+                                            <td class="col-xs-1 text-right">
+                                                {{$deal->ctn || $deal->pcs ? $deal->pcs : $deal->dividend + 0}}
+                                            </td>
+                                        @endif
                                     @elseif($deal->item->is_inventory === 0)
-                                        <td class="col-xs-1 text-left" colspan="2">
-                                            @if($deal->dividend === 1)
-                                                1 Unit
-                                            @else
-                                                {{$deal->dividend + 0}} Unit
-                                            @endif
-                                        </td>
+                                        @if($transaction->is_vending_generate)
+                                            <td class="col-xs-1 text-left">
+                                                @if($deal->dividend === 1)
+                                                    1 Unit
+                                                @else
+                                                    {{$deal->dividend + 0}} Unit
+                                                @endif
+                                            </td>
+                                        @else
+                                            <td class="col-xs-1 text-left" colspan="2">
+                                                @if($deal->dividend === 1)
+                                                    1 Unit
+                                                @else
+                                                    {{$deal->dividend + 0}} Unit
+                                                @endif
+                                            </td>
+                                        @endif
                                     @else
-                                        <td class="col-xs-1 text-right">
-                                            {{ $deal->qty + 0 }}
-                                        </td>
+                                        @if(!$transaction->is_vending_generate)
+                                            <td class="col-xs-1 text-right">
+                                                {{ $deal->qty + 0 }}
+                                            </td>
+                                        @endif
                                     @endif
 
                                     @if($deal->unit_price == 0 || $deal->unit_price == null)
@@ -453,9 +464,15 @@
                             </tr>
                         @else
                             <tr class="noBorder">
-                                <td colspan="2" class="text-right">
-                                    <strong>Total</strong>
-                                </td>
+                                @if($transaction->is_vending_generate)
+                                    <td class="text-right">
+                                        <strong>Total</strong>
+                                    </td>
+                                @else
+                                    <td colspan="2" class="text-right">
+                                        <strong>Total</strong>
+                                    </td>
+                                @endif
                                 <td class="text-right" colspan="2">
                                     {{$totalqty}}
                                 </td>
