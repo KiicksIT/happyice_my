@@ -305,14 +305,14 @@
                                     </td>
 
                                     @if($deal->divisor and $deal->item->is_inventory === 1)
-                                        @if(!$transaction->is_vending_generate)
+                                        {{-- @if(!$transaction->is_vending_generate) --}}
                                             <td class="col-xs-1 text-right">
                                                 {{$deal->ctn}}
                                             </td>
                                             <td class="col-xs-1 text-right">
                                                 {{$deal->ctn || $deal->pcs ? $deal->pcs : $deal->dividend + 0}}
                                             </td>
-                                        @endif
+                                        {{-- @endif --}}
                                     @elseif($deal->item->is_inventory === 0)
                                         @if($transaction->is_vending_generate)
                                             <td class="col-xs-1 text-left">
@@ -332,11 +332,11 @@
                                             </td>
                                         @endif
                                     @else
-                                        @if(!$transaction->is_vending_generate)
+                                        {{-- @if(!$transaction->is_vending_generate) --}}
                                             <td class="col-xs-1 text-right">
                                                 {{ $deal->qty + 0 }}
                                             </td>
-                                        @endif
+                                        {{-- @endif --}}
                                     @endif
 
                                     @if($deal->unit_price == 0 || $deal->unit_price == null)
