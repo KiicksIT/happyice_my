@@ -269,15 +269,19 @@ class TransactionController extends Controller
 
         if($transaction->gst) {
             if($transaction->is_gst_inclusive) {
-                $total = number_format($transaction->total, 2);
-                $tax = number_format($transaction->total - $transaction->total/((100 + $transaction->gst_rate)/ 100), 2);
-                $subtotal = number_format($transaction->total - $tax, 2);
+                $total = $transaction->total;
+                $tax = $transaction->total - $transaction->total/((100 + $transaction->gst_rate)/ 100);
+                $subtotal = $transaction->total - $tax;
             }else {
-                $subtotal = number_format($transaction->total, 2);
-                $tax = number_format($transaction->total * ($transaction->gst_rate)/100, 2);
-                $total = number_format(((float)$transaction->total + (float) $tax), 2);
+                $subtotal = $transaction->total;
+                $tax = $transaction->total * ($transaction->gst_rate)/100;
+                $total = $transaction->total +  $tax;
             }
         }
+
+        $subtotal = number_format($subtotal, 2);
+        $tax = number_format($tax, 2);
+        $total = number_format($total, 2);
 
         $delivery_fee = $transaction->delivery_fee;
 
@@ -986,7 +990,7 @@ class TransactionController extends Controller
                                 );
 
         // reading whether search input is filled
-        if(request('id') or request('cust_id') or request('company') or request('status') or request('pay_status') or request('updated_by') or request('updated_at') or request('delivery_from') or request('delivery_to') or request('driver') or request('profile_id') or request('custcategory') or request('franchisee_id') or request('statuses')){
+        if(request('id') or request('cust_id') or request('company') or request('status') or request('pay_status') or request('updated_by') or request('updated_at') or request('delivery_from') or request('delivery_to') or request('driver') or request('profile_id') or request('custcategory') or request('franchisee_id') or request('statuses') or request('person_active') or request('greater_zero')){
             $transactions = $this->searchDBFilter($transactions);
         }
 
@@ -1549,6 +1553,26 @@ class TransactionController extends Controller
                 $transactions = $transactions->where('people.franchisee_id', request('franchisee_id'));
             }else {
                 $transactions = $transactions->where('people.franchisee_id', 0);
+            }
+
+        }
+
+        if(request('person_active')) {
+            $transactions = $transactions->where('people.active', request('person_active'));
+        }
+
+        if(request('greater_zero')) {
+            $greater_zero = request('greater_zero');
+            switch($greater_zero) {
+                case 1:
+                    $transactions = $transactions->where('transactions.total', '>', 0);
+                    break;
+                case 2:
+                    $transactions = $transactions->where('transactions.total', '<', 0);
+                    break;
+                case 3:
+                    $transactions = $transactions->where('transactions.total', '=', 0);
+                    break;
             }
 
         }
