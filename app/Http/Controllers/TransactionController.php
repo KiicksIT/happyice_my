@@ -265,7 +265,7 @@ class TransactionController extends Controller
 
         $subtotal = 0;
         $tax = 0;
-        $total = number_format($transaction->total, 2);
+        $total = $transaction->total;
 
         if($transaction->gst) {
             if($transaction->is_gst_inclusive) {
