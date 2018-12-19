@@ -193,7 +193,7 @@
                             </select>
                         </div>
                     </div>
-{{--                     <div class="row">
+                    <div class="row">
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('person_active', 'Status', ['class'=>'control-label search-title']) !!}
                             <select name="person_active" id="person_active" class="select form-control" ng-model="search.person_active" ng-change="searchDB()">
@@ -205,7 +205,16 @@
                                 @endif
                             </select>
                         </div>
-                    </div> --}}
+                        <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                            {!! Form::label('pay_method', 'Pay Method', ['class'=>'control-label search-title']) !!}
+                            <select name="pay_method" id="pay_method" class="select form-control" ng-model="search.pay_method" ng-change="searchDB()">
+                                <option value="">All</option>
+                                <option value="cash">Cash</option>
+                                <option value="cheque">Cheque</option>
+                                <option value="tt">TT</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="row">

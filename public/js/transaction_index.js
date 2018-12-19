@@ -32,6 +32,7 @@ var app = angular.module('app', [
             custcategories: '',
             person_active: '',
             greater_zero: '',
+            pay_method: '',
             itemsPerPage: 100,
             sortName: '',
             sortBy: true
