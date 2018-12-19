@@ -990,7 +990,7 @@ class TransactionController extends Controller
                                 );
 
         // reading whether search input is filled
-        if(request('id') or request('cust_id') or request('company') or request('status') or request('pay_status') or request('updated_by') or request('updated_at') or request('delivery_from') or request('delivery_to') or request('driver') or request('profile_id') or request('custcategory') or request('franchisee_id') or request('statuses') or request('person_active') or request('greater_zero')){
+        if(request('id') or request('cust_id') or request('company') or request('status') or request('pay_status') or request('updated_by') or request('updated_at') or request('delivery_from') or request('delivery_to') or request('driver') or request('profile_id') or request('custcategories') or request('franchisee_id') or request('statuses') or request('person_active') or request('greater_zero')){
             $transactions = $this->searchDBFilter($transactions);
         }
 
@@ -1540,8 +1540,14 @@ class TransactionController extends Controller
         if(request('profile_id')){
             $transactions = $transactions->where('profiles.id', request('profile_id'));
         }
-        if(request('custcategory')) {
-            $transactions = $transactions->where('custcategories.id', request('custcategory'));
+        if(request('custcategories')) {
+            $custcategories = request('custcategories');
+            if (count($custcategories) == 1) {
+                $custcategories = [$custcategories];
+            }
+            $transactions = $transactions->whereIn('custcategories.id', $custcategories);
+
+            // $transactions = $transactions->where('custcategories.id', request('custcategory'));
         }
         // add in franchisee checker
         if (auth()->user()->hasRole('franchisee')) {

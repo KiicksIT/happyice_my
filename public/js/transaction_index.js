@@ -29,7 +29,7 @@ var app = angular.module('app', [
             delivery_from: $scope.today,
             delivery_to: $scope.today,
             driver: '',
-            custcategory: '',
+            custcategories: '',
             person_active: '',
             greater_zero: '',
             itemsPerPage: 100,

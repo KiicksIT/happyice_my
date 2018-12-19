@@ -148,13 +148,21 @@
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('custcategory', 'Category', ['class'=>'control-label search-title']) !!}
-                            {!! Form::select('custcategory', [''=>'All']+$custcategories::orderBy('name')->pluck('name', 'id')->all(), null,
+                            <select name="custcategories" class="selectmultiple form-control" ng-model="search.custcategories" ng-change="searchDB()" multiple>
+                                <option value="">All</option>
+                                @foreach($custcategories::orderBy('name')->get() as $custcategory)
+                                    <option value="{{$custcategory->id}}">
+                                        {{$custcategory->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+{{--                             {!! Form::select('custcategory', [''=>'All']+$custcategories::orderBy('name')->pluck('name', 'id')->all(), null,
                                 [
                                 'class'=>'select form-control',
                                 'ng-model'=>'search.custcategory',
                                 'ng-change'=>'searchDB()'
                                 ])
-                            !!}
+                            !!} --}}
                         </div>
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('profile_id', 'Profile', ['class'=>'control-label search-title']) !!}
@@ -174,17 +182,7 @@
                                 ])
                             !!}
                         </div>
-{{--                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                            {!! Form::label('person_active', 'Status', ['class'=>'control-label search-title']) !!}
-                            <select name="person_active" id="person_active" class="select form-control" ng-model="search.person_active" ng-change="searchDB()">
-                                <option value="">All</option>
-                                <option value="Yes">Active</option>
-                                @if(!auth()->user()->hasRole('driver'))
-                                    <option value="No">Inactive</option>
-                                    <option value="Pending">Pending</option>
-                                @endif
-                            </select>
-                        </div> --}}
+
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('greater_zero', 'Greater Than Zero', ['class'=>'control-label search-title']) !!}
                             <select name="greater_zero" id="person_active" class="select form-control" ng-model="search.greater_zero" ng-change="searchDB()">
@@ -194,8 +192,20 @@
                                 <option value="3">Equals</option>
                             </select>
                         </div>
-
                     </div>
+{{--                     <div class="row">
+                        <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                            {!! Form::label('person_active', 'Status', ['class'=>'control-label search-title']) !!}
+                            <select name="person_active" id="person_active" class="select form-control" ng-model="search.person_active" ng-change="searchDB()">
+                                <option value="">All</option>
+                                <option value="Yes">Active</option>
+                                @if(!auth()->user()->hasRole('driver'))
+                                    <option value="No">Inactive</option>
+                                    <option value="Pending">Pending</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div> --}}
                 </div>
                 <div class="row">
                     <div class="row">
