@@ -148,7 +148,7 @@
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('custcategory', 'Category', ['class'=>'control-label search-title']) !!}
-                            <select name="custcategories" class="selectmultiple form-control" ng-model="search.custcategories" ng-change="searchDB()" multiple>
+                            <select name="custcategories[]" class="selectmultiple form-control" ng-model="search.custcategories" ng-change="searchDB()" multiple>
                                 <option value="">All</option>
                                 @foreach($custcategories::orderBy('name')->get() as $custcategory)
                                     <option value="{{$custcategory->id}}">
@@ -195,7 +195,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                            {!! Form::label('person_active', 'Status', ['class'=>'control-label search-title']) !!}
+                            {!! Form::label('person_active', 'Customer Status', ['class'=>'control-label search-title']) !!}
                             <select name="person_active" id="person_active" class="select form-control" ng-model="search.person_active" ng-change="searchDB()">
                                 <option value="">All</option>
                                 <option value="Yes">Active</option>

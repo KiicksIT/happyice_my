@@ -1545,9 +1545,7 @@ class TransactionController extends Controller
             if (count($custcategories) == 1) {
                 $custcategories = [$custcategories];
             }
-            $transactions = $transactions->whereIn('custcategories.id', $custcategories);
-
-            // $transactions = $transactions->where('custcategories.id', request('custcategory'));
+            $transactions = $transactions->whereIn('people.custcategory_id', $custcategories);
         }
         // add in franchisee checker
         if (auth()->user()->hasRole('franchisee')) {
