@@ -229,6 +229,7 @@
                                     placeholder = "Delivery From"
                                     ng-model = "search.delivery_from"
                                     ng-change = "delFromChange(search.delivery_from)"
+                                    autocomplete="off"
                                 />
                             </datepicker>
                             <span class="input-group-addon fa fa-backward" ng-click="onPrevSingleClicked('delivery_from', search.delivery_from)"></span>
@@ -246,6 +247,7 @@
                                     placeholder = "Delivery To"
                                     ng-model = "search.delivery_to"
                                     ng-change = "delToChange(search.delivery_to)"
+                                    autocomplete="off"
                                 />
                             </datepicker>
                             <span class="input-group-addon fa fa-backward" ng-click="onPrevSingleClicked('delivery_to', search.delivery_to)"></span>
