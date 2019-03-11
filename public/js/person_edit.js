@@ -56,7 +56,8 @@ var app = angular.module('app', [
 
         angular.element(document).ready(function () {
             $('.select').select2({
-                placeholder: 'Select..'
+                placeholder: 'Select..',
+                allowClear: true
             });
         });
         $scope.onDeliveryFromChanged = function(date){
