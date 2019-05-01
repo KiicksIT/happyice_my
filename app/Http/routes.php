@@ -325,7 +325,10 @@ Route::get('/api/items/itemcategory/{itemcategory_id}', 'ItemcategoryController@
 
 Route::post('/api/prices/person', 'PriceController@getPersonPricesApi');
 Route::post('/pricematrix/batchconfirm', 'PriceController@batchConfirmPriceMatrix');
-Route::match(['get', 'post'], '/pricematrix', 'PriceController@getPriceMatrix');
+Route::get('/pricematrix', 'PriceController@getPriceMatrixIndex');
+Route::post('/api/pricematrix', 'PriceController@getPriceMatrixIndexApi');
+Route::post('/api/pricematrix/edit', 'PriceController@editPriceMatrixApi');
+Route::post('/api/pricematrix/costrate/edit', 'PriceController@editCostrateApi');
 Route::get('/api/prices/{item_id}/{person_id}', 'PriceController@lookupPrices');
 Route::resource('price', 'PriceController');
 

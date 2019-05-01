@@ -6,9 +6,11 @@
 
 @inject('custcategories', 'App\Custcategory')
 
-{{-- <div class="create_edit" ng-app="app" ng-controller="priceMatrixController"> --}}
-<div class="create_edit">
-    <div class="panel panel-primary">
+    <div class="row">
+        <a class="title_hyper pull-left" href="/detailrpt/operation"><h1>Price Matrix <i class="fa fa-book"></i></h1></a>
+    </div>
+
+    <div class="panel panel-primary" ng-app="app" ng-controller="pricematrixController">
         <div class="panel-heading">
             <div class="panel-title">
                 <div class="pull-left display_panel_title">
@@ -19,181 +21,160 @@
 
         <div class="panel-body">
             <div class="row">
-                {!! Form::open(['id'=>'search_form', 'method'=>'POST', 'action'=>['PriceController@getPriceMatrix']]) !!}
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="form-group col-md-2 col-sm-4 col-xs-6">
-                            {!! Form::label('cust_id', 'Customer ID', ['class'=>'control-label search-title']) !!}
-                            {!! Form::text('cust_id',
-                                request('cust_id') ? request('cust_id') : null,
-                                [
-                                    'class'=>'form-control input-sm',
-                                    'placeholder'=>'ID',
-                                ])
-                            !!}
-                        </div>
-                        <div class="form-group col-md-2 col-sm-4 col-xs-6">
-                            {!! Form::label('custcategory_id', 'Cust Category', ['class'=>'control-label search-title']) !!}
-                            {!! Form::select('custcategory_id', [''=>'All']+$custcategories::orderBy('name')->pluck('name', 'id')->all(),
-                                request('custcategory_id') ? request('custcategory_id') : '2',
-                                ['class'=>'select form-control'])
-                            !!}
-                        </div>
-                        <div class="form-group col-md-2 col-sm-4 col-xs-6">
-                            {!! Form::label('company', 'Cust ID Name', ['class'=>'control-label search-title']) !!}
-                            {!! Form::text('company',
-                                request('company') ? request('company') : null,
-                                [
-                                    'class'=>'form-control input-sm',
-                                    'placeholder'=>'Cust ID Name',
-                                ])
-                            !!}
-                        </div>
-                        <div class="form-group col-md-2 col-sm-4 col-xs-6">
-                            {!! Form::label('product_id', 'Product ID', ['class'=>'control-label search-title']) !!}
-                            {!! Form::text('product_id',
-                                request('product_id') ? request('product_id') : null,
-                                [
-                                    'class'=>'form-control input-sm',
-                                    'placeholder'=>'Product ID',
-                                ])
-                            !!}
-                        </div>
-                        <div class="form-group col-md-2 col-sm-4 col-xs-6">
-                            {!! Form::label('name', 'Product Name', ['class'=>'control-label search-title']) !!}
-                            {!! Form::text('name',
-                                request('name') ? request('name') : null,
-                                [
-                                    'class'=>'form-control input-sm',
-                                    'placeholder'=>'Name',
-                                ])
-                            !!}
-                        </div>
+                    <div class="form-group col-md-2 col-sm-4 col-xs-6">
+                        {!! Form::label('cust_id', 'Customer ID', ['class'=>'control-label search-title']) !!}
+                        {!! Form::text('cust_id',
+                            null,
+                            [
+                                'class'=>'form-control input-sm',
+                                'ng-model' => 'search.cust_id',
+                                'placeholder'=>'ID',
+                            ])
+                        !!}
+                    </div>
+                    <div class="form-group col-md-2 col-sm-4 col-xs-6">
+                        {!! Form::label('custcategory_id', 'Cust Category', ['class'=>'control-label search-title']) !!}
+                        {!! Form::select('custcategory_id', [''=>'All']+$custcategories::orderBy('name')->pluck('name', 'id')->all(),
+                            null,
+                            [
+                                'class'=>'select form-control',
+                                'ng-model' => 'search.custcategory_id'
+                            ])
+                        !!}
+                    </div>
+                    <div class="form-group col-md-2 col-sm-4 col-xs-6">
+                        {!! Form::label('company', 'Cust ID Name', ['class'=>'control-label search-title']) !!}
+                        {!! Form::text('company',
+                            null,
+                            [
+                                'class'=>'form-control input-sm',
+                                'placeholder'=>'Cust ID Name',
+                                'ng-model' => 'search.company'
+                            ])
+                        !!}
+                    </div>
+                    <div class="form-group col-md-2 col-sm-4 col-xs-6">
+                        {!! Form::label('product_id', 'Product ID', ['class'=>'control-label search-title']) !!}
+                        {!! Form::text('product_id',
+                            null,
+                            [
+                                'class'=>'form-control input-sm',
+                                'placeholder'=>'Product ID',
+                                'ng-model' => 'search.product_id'
+                            ])
+                        !!}
+                    </div>
+                    <div class="form-group col-md-2 col-sm-4 col-xs-6">
+                        {!! Form::label('name', 'Product Name', ['class'=>'control-label search-title']) !!}
+                        {!! Form::text('name',
+                            null,
+                            [
+                                'class'=>'form-control input-sm',
+                                'placeholder'=>'Name',
+                                'ng-model' => 'search.name'
+                            ])
+                        !!}
+                    </div>
 
-                        <div class="form-group col-md-2 col-sm-4 col-xs-6">
-                            {!! Form::label('is_inventory', 'Product Type', ['class'=>'control-label search-title']) !!}
-                            {!! Form::select('is_inventory',
-                                ['1'=>'Inventory Item', 'All'=>'All'],
-                                request('is_inventory') ? request('is_inventory') : '1',
-                                ['class'=>'select form-control'])
-                            !!}
-                        </div>
+                    <div class="form-group col-md-2 col-sm-4 col-xs-6">
+                        {!! Form::label('is_inventory', 'Product Type', ['class'=>'control-label search-title']) !!}
+                        {!! Form::select('is_inventory',
+                            ['1'=>'Inventory Item', 'All'=>'All'],
+                            null,
+                            [
+                                'class'=>'select form-control',
+                                'ng-model' => 'search.is_inventory'
+                            ])
+                        !!}
                     </div>
                 </div>
-                {!! Form::close() !!}
             </div>
 
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="btn-input-group">
-                            <button type="submit" form="search_form" class="btn btn-default"><i class="fa fa-search"></i> <span class="hidden-xs">Search</span></button>
-                            <button type="submit" form="submit_batch" class="btn btn-success"><i class="fa fa-check"></i> Batch Confirm</button>
-                            {{-- <button type="submit" form="search_form" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> <span class="hidden-xs"> Export Excel</span></button> --}}
-                        </div>
+            <div class="row" style="padding-left: 15px;">
+                <div class="col-md-8 col-sm-12 col-xs-12">
+                    <button type="submit" class="btn btn-info" ng-click="searchDB($event)"><i class="fa fa-search"></i><span class="hidden-xs"></span> Search</button>
+
+                    <span ng-show="spinner"> <i class="fa fa-spinner fa-2x fa-spin"></i></span>
+                </div>
+{{--
+                <div class="col-md-4 col-sm-4 col-xs-12 text-right">
+                    <div class="row">
+                        <label for="display_num">Display</label>
+                        <select ng-model="itemsPerPage" name="pageNum" ng-init="itemsPerPage='All'" ng-change="pageNumChanged()">
+                            <option ng-value="100">100</option>
+                            <option ng-value="200">200</option>
+                            <option ng-value="All">All</option>
+                        </select>
+                        <label for="display_num2" style="padding-right: 20px">per Page</label>
                     </div>
-                </div>
-
-                {!! Form::open(['id'=>'submit_batch', 'method'=>'POST', 'action'=>['PriceController@batchConfirmPriceMatrix']]) !!}
-                <div class="table-responsive" id="exportable" style="padding-top:15px;">
-                    <table class="table table-fixed table-list-search table-hover table-bordered" style="font-size: 12px;">
-                        <thead>
-                        <tr style="background-color: #DDFDF8;">
-                            <td class="col-md-1 text-center">
-                                <input type="checkbox" id="checkAll" />
-                            </td>
-                            <th class="col-md-1 text-center">
-                                #
-                            </th>
-                            <th class="col-md-1 text-center">
-                                Cost Rate (%)
-                            </th>
-                            @foreach($items as $item)
-                            <td class="col-md-1 text-left">
-                                (<strong>{{$item->product_id}}</strong>) {{$item->name}}
-                            </td>
-                            @endforeach
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($people as $person)
-                        <tr>
-                            <td class="col-md-1 text-center">
-                                <input type="checkbox" name="checkbox[{{$person->id}}]">
-                            </td>
-                            <td>(<strong>{{$person->cust_id}}</strong>) {{$person->company}}</td>
-                            <td class="col-md-1">
-                                {{-- <input type="text" name="cost_rate[{{$person->id}}]" class="text-right" ng-value="{{$person->cost_rate}}" ng-model="costrate[{{$person->id}}]" style="width: 55px;"> --}}
-                                <input type="text" name="cost_rate[{{$person->id}}]" class="text-right" value="{{$person->cost_rate}}" style="width: 55px;">
-                            </td>
-                            @foreach($items as $item)
-                                @php
-                                    $price = \App\Price::where('person_id', $person->id)->where('item_id', $item->id)->first();
-                                @endphp
-                            <td class="col-md-1">
-                                Retail Price
-                                {{-- <input type="text" name="retail_price[{{$item->id}}-{{$person->id}}]" class="text-right" ng-value="{{$price ? $price->retail_price : ''}}" ng-model="retailprice[{{$item->id}}-{{$person->id}}]" ng-change="changeRetailPrice({{$item->id}}, {{$person->id}}, {{$price ? $price->retail_price : 0}})"> --}}
-                                <input type="text" name="retail_price[{{$item->id}}-{{$person->id}}]" class="text-right" value="{{$price ? $price->retail_price : ''}}">
-                                Quote Price
-                                {{-- <input type="text" name="quote_price[{{$item->id}}-{{$person->id}}]" class="text-right" ng-value="{{$price ? $price->quote_price : ''}}" ng-model="quoteprice[$index]"> --}}
-                                <input type="text" name="quote_price[{{$item->id}}-{{$person->id}}]" class="text-right" value="{{$price ? $price->quote_price : ''}}">
-                            </td>
-                            @endforeach
-                        </tr>
-                        @endforeach
-                        </tbody>
-            {{--                 <tr dir-paginate="item in items | filter:search | orderBy:sortType:sortReverse | itemsPerPage:itemsPerPage"  current-page="currentPage" ng-controller="repeatController" pagination-id="item">
-                                <td class="col-md-1 text-center">@{{ number }} </td>
-                                <td class="col-md-1 text-center">@{{ item.product_id }}</td>
-                                <td class="col-md-2">@{{ item.name }}</td>
-                                <td class="col-md-1 text-center">@{{ item.unit }}</td>
-                                <td class="col-md-1 text-right">
-                                    <span ng-if="item.is_inventory === 1">
-                                        <strong>@{{item.qty_now | currency: "": 4 }}</strong>
-                                    </span>
-                                    <span ng-if="item.is_inventory === 0">
-                                        N/A
-                                    </span>
-                                </td>
-                                <td class="col-md-1 text-right">
-                                    <span ng-if="item.is_inventory === 1">
-                                        <a href="/item/qtyorder/@{{item.id}}">@{{ item.qty_order ? item.qty_order : 0 | currency: "": 4 }}</a>
-                                    </span>
-                                    <span ng-if="item.is_inventory === 0">
-                                        N/A
-                                    </span>
-                                </td>
-                                <td class="col-md-1 text-right">@{{ item.lowest_limit | currency: "": 4 }}</td>
-                                <td class="col-md-1 text-center">@{{ item.publish == 1 ? 'Yes':'No'  }}</td>
-                                <td class="col-md-1 text-center">@{{ item.is_inventory == 1 ? 'Yes':'No'  }}</td>
-                                <td class="col-md-1 text-center">@{{ item.is_active == 1 ? 'Yes':'No'  }}</td>
-                                <td class="col-md-1 text-center">
-                                    @cannot('transaction_view')
-                                    <a href="/item/@{{ item.id }}/edit" class="btn btn-sm btn-primary">Edit</a>
-                                    @endcannot
-                                </td>
-                            </tr>
-                            <tr ng-if="(items | filter:search).length == 0 || ! items.length">
-                                <td class="text-center" colspan="10">No Records Found!</td>
-                            </tr> --}}
-
-                    </table>
-                </div>
-                {!! Form::close() !!}
-            {{--
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" class="pull-left" pagination-id="item"> </dir-pagination-controls>
-                    <label ng-if-"items" class="pull-right totalnum" for="totalnum">Showing @{{(items | filter:search).length}} of @{{items.length}} entries</label>
+                    <div class="row">
+                        <label class="" style="padding-right:18px;" for="totalnum">Showing @{{people.length}} of @{{totalCount}} entries</label>
+                    </div>
                 </div> --}}
+            </div>
+            {!! Form::close() !!}
+
+            <div class="table-responsive" id="exportable" style="padding-top: 20px;">
+                <table id="datatable" class="table table-list-search table-bordered table-fixedheader">
+                    <thead style="font-size: 11px;">
+                    <tr style="background-color: #DDFDF8">
+                        <th class="col-md-1 text-center">
+                            #
+                        </th>
+                        <th class="col-md-1 text-center">
+                            Customer
+                        </th>
+                        <th class="col-md-1 text-center">
+                            Cost Rate (%)
+                        </th>
+                        <th class="col-md-1 text-center" ng-repeat="item in items">
+                            (@{{item.product_id}}) @{{item.name}}
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody style="font-size: 11px;">
+                        <tr ng-repeat="person in people">
+                            <td class="col-md-1 text-center">
+                                @{{$index + 1}}
+                            </td>
+                            <td class="col-md-1 text-center">
+                                (@{{person.cust_id}}) @{{person.company}}
+                            </td>
+                            <td class="col-md-1">
+                                {!! Form::text('operation_notes[@{{person.person_id}}]', null,
+                                [
+                                    'class'=>'text-right input-xs',
+                                    'style'=>'min-width: 55px; font-size: 12px;',
+                                    'ng-model'=>'person.cost_rate',
+                                    'ng-change'=>'onCostrateChanged(person)',
+                                    'ng-model-options'=>'{ debounce: 600 }'
+                                ]) !!}
+                            </td>
+                            <td class="col-md-1 text-right" style="min-width: 70px;" ng-repeat="price in prices[$index]">
+                                <div class="form-group">
+                                    <label for="retail_price">Retail Price</label>
+                                    <input type="text" class="input-xs text-right" ng-model="price.retail_price" ng-change="onPriceChanged(price)" ng-model-options="{debounce: 600}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="quote_price">Quote Price</label>
+                                    <input type="text" class="input-xs text-right" ng-model="price.quote_price" ng-change="onPriceChanged(price)" ng-model-options="{debounce: 600}">
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr ng-if="!people.length > 0">
+                            <td colspan="18" class="text-center">No Records Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
         </div>
     </div>
-</div>
-<script>
-    $('.select').select2();
 
-    $('#checkAll').change(function(){
-        var all = this;
-        $(this).closest('table').find('input[type="checkbox"]').prop('checked', all.checked);
-    });
-</script>
-{{-- <script src="/js/price_matrix.js"></script> --}}
+<script src="/js/price_matrix.js"></script>
+
 @stop

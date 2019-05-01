@@ -167,7 +167,7 @@ class PriceController extends Controller
         return $prices;
     }
 
-/*
+    /*
     // return items horizontal th for price matrix
     public function getPriceMatrixItems()
     {
@@ -184,19 +184,110 @@ class PriceController extends Controller
         return $people;
     }*/
 
-    // return items horizontal th for price matrix
-    public function getPriceMatrix()
+    // return items horizontal th for price matrix index
+    public function getPriceMatrixIndex()
     {
+        return view('person.price_matrix');
+    }
+
+
+    // return items horizontal th for price matrix
+    public function getPriceMatrixIndexApi()
+    {
+        $people = DB::table('people')
+            ->select(
+                'people.id',
+                'people.cust_id',
+                'people.custcategory_id',
+                'people.cost_rate'
+            );
+
         $people = $this->filterPriceMatrixPeople();
+
+        $people = $people->orderBy('cust_id')->get();
+
+        $items = DB::table('items')
+            ->select(
+                'items.id',
+                'items.product_id',
+                'items.name',
+                'items.itemcategory_id'
+            );
 
         $items = $this->filterPriceMatrixItems();
 
+        $items = $items->orderBy('product_id')->get();
+
+        $prices = array();
+
+        foreach ($people as $index1 => $person) {
+            foreach ($items as $index2 => $item) {
+                $price = DB::table('prices')
+                    ->where('person_id', $person->id)
+                    ->where('item_id', $item->id)
+                    ->first();
+
+                $prices[$index1][$index2] = [
+                    'person_id' => $person->id,
+                    'price_id' => $price ? $price->id : '',
+                    'item_id' => $item->id,
+                    'retail_price' => $price ? $price->retail_price : '',
+                    'quote_price' => $price ? $price->quote_price : ''
+                ];
+            }
+        }
+
         $data = [
             'people' => $people,
-            'items' => $items
+            'items' => $items,
+            'prices' => $prices
         ];
 
-        return view('person.price_matrix', compact('people', 'items'));
+        return $data;
+    }
+
+    // edit and update the price matrix
+    public function editPriceMatrixApi()
+    {
+        $person_id = request('person_id');
+        $item_id = request('item_id');
+        $retail_price = request('retail_price');
+        $quote_price = request('quote_price');
+        $price_id = request('price_id');
+
+        $price = Price::find($price_id);
+
+        if ($price) {
+            if ($retail_price and $quote_price) {
+                $price->update([
+                    'retail_price' => $retail_price,
+                    'quote_price' => $quote_price
+                ]);
+            } else {
+                $price->delete();
+            }
+        } else {
+            Price::create([
+                'person_id' => $person_id,
+                'item_id' => $item_id,
+                'retail_price' => $retail_price,
+                'quote_price' => $quote_price,
+            ]);
+        }
+    }
+
+    // update the person costrate
+    public function editCostrateApi()
+    {
+        $person_id = request('id');
+        $cost_rate = request('cost_rate');
+        $person = Person::find($person_id);
+
+        if ($person) {
+            $person->update([
+                'cost_rate' => $cost_rate
+            ]);
+        }
     }
 
     // processing batch confirm for price matrix()
@@ -321,24 +412,16 @@ class PriceController extends Controller
 
         $items = new Item();
 
-        if ($product_id) {
-            $items = $items->where('product_id', 'LIKE', '%' . $product_id . '%');
+        if($product_id) {
+            $items = $items->where('items.product_id', 'LIKE', '%' . $product_id . '%');
         }
-        if ($name) {
-            $items = $items->where('name', 'LIKE', '%' . $name . '%');
-        }
-
-        // init
-        if (request()->isMethod('get')) {
-
-            $items = $items->where('is_inventory', 1);
-
-        } else if (request()->isMethod('post')) {
-
-            $items = $items->where('is_inventory', $is_inventory);
+        if($name) {
+            $items = $items->where('items.name', 'LIKE', '%' . $name . '%');
         }
 
-        $items = $items->orderBy('product_id')->get();
+        if($is_inventory) {
+            $items = $items->where('items.is_inventory', $is_inventory);
+        }
 
         return $items;
     }
@@ -353,21 +436,14 @@ class PriceController extends Controller
         $people = new Person();
 
         if ($cust_id) {
-            $people = $people->where('cust_id', 'LIKE', '%' . $cust_id . '%');
+            $people = $people->where('people.cust_id', 'LIKE', '%' . $cust_id . '%');
         }
         if ($custcategory_id) {
-            $people = $people->where('custcategory_id', $custcategory_id);
+            $people = $people->where('people.custcategory_id', $custcategory_id);
         }
         if ($company) {
-            $people = $people->where('company', 'LIKE', '%' . $company . '%');
+            $people = $people->where('people.company', 'LIKE', '%' . $company . '%');
         }
-
-        // init
-        if (request()->isMethod('get')) {
-            $people = $people->where('custcategory_id', 2);
-        }
-
-        $people = $people->orderBy('cust_id')->get();
 
         return $people;
     }
