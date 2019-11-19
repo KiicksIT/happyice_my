@@ -1074,7 +1074,7 @@ class TransactionController extends Controller
 
                     if(!$item->is_inventory) {
                         if($cartons[$index]) {
-                            $dividend = 1;
+                            $dividend = $cartons[$index];
                             $qty = $cartons[$index];
                         }
                     }
