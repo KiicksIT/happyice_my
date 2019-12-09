@@ -32,7 +32,7 @@
         {!! Form::text('name', '@{{form.name}}', ['class'=>'hidden form-control']) !!}
 
         <div class="row">
-            <div class="col-md-4 form-group">
+            <div class="col-md-6 form-group">
                 {!! Form::label('bill_address', 'Bill To', ['class'=>'control-label']) !!}
                 {!! Form::textarea('bill_address', null, ['class'=>'form-control',
                 'ng-model'=>'form.bill_address',
@@ -40,30 +40,18 @@
             </div>
 
             @if($transaction->status == 'Cancelled' or (Auth::user()->can('transaction_view') and $transaction->status === 'Delivered'))
-                <div class="col-md-4 form-group">
+                <div class="col-md-6 form-group">
                     {!! Form::label('del_address', 'Delivery Add', ['class'=>'control-label']) !!}
                     {!! Form::textarea('del_address', null, ['class'=>'form-control',
                     'ng-model'=>'form.del_address',
                     'readonly'=>'readonly',
                     'rows'=>'3']) !!}
                 </div>
-
-                <div class="col-md-4 form-group">
-                    {!! Form::label('transremark', 'Remark', ['class'=>'control-label']) !!}
-                    {!! Form::textarea('transremark', null, ['class'=>'form-control', 'rows'=>'3', 'readonly'=>'readonly']) !!}
-                </div>
             @else
-                <div class="col-md-4 form-group">
+                <div class="col-md-6 form-group">
                     {!! Form::label('del_address', 'Delivery Add', ['class'=>'control-label']) !!}
                     {!! Form::textarea('del_address', null, ['class'=>'form-control',
                     'ng-model'=>'form.del_address',
-                    'rows'=>'3']) !!}
-                </div>
-
-                <div class="col-md-4 form-group">
-                    {!! Form::label('transremark', 'Remark', ['class'=>'control-label']) !!}
-                    {!! Form::textarea('transremark', null, ['class'=>'form-control',
-                    'ng-model'=>'form.transremark',
                     'rows'=>'3']) !!}
                 </div>
             @endif
@@ -249,6 +237,22 @@
                 <div class="col-md-4 form-group">
                     {!! Form::label('note', 'Note', ['class'=>'control-label']) !!}
                     {!! Form::text('note', null, ['class'=>'form-control']) !!}
+                </div>
+            @endif
+        </div>
+
+        <div class="row">
+            @if($transaction->status == 'Cancelled' or (Auth::user()->can('transaction_view') and $transaction->status === 'Delivered'))
+                <div class="col-md-12 form-group">
+                    {!! Form::label('transremark', 'Remark', ['class'=>'control-label']) !!}
+                    {!! Form::textarea('transremark', null, ['class'=>'form-control', 'rows'=>'5', 'readonly'=>'readonly']) !!}
+                </div>
+            @else
+                <div class="col-md-12 form-group">
+                    {!! Form::label('transremark', 'Remark', ['class'=>'control-label']) !!}
+                    {!! Form::textarea('transremark', null, ['class'=>'form-control',
+                    'ng-model'=>'form.transremark',
+                    'rows'=>'5']) !!}
                 </div>
             @endif
         </div>
