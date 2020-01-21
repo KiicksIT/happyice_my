@@ -148,13 +148,17 @@
                         <div class="form-group" style="padding-left:10px; margin-top:-5px;">
                             <div class="col-xs-12 row">
                                 <div style="font-size: 130%;" class="text-center">
-                                    @if($transaction->is_vending_generate)
-                                        <strong>SALES REPORT</strong>
+                                    @if($is_do)
+                                        <strong>Delivery Order</strong>
                                     @else
-                                        @if($transaction->gst)
-                                        <strong>DO/ TAX INVOICE</strong>
+                                        @if($transaction->is_vending_generate)
+                                            <strong>SALES REPORT</strong>
                                         @else
-                                        <strong>DO/ INVOICE</strong>
+                                            @if($transaction->gst)
+                                            <strong>DO/ TAX INVOICE</strong>
+                                            @else
+                                            <strong>DO/ INVOICE</strong>
+                                            @endif
                                         @endif
                                     @endif
                                 </div>
@@ -260,6 +264,7 @@
                                 Pcs
                             </th>
                             @endif
+                            @if(!$is_do)
                             <th class="col-xs-1 text-center">
                                 @if($transaction->is_vending_generate)
                                     Percent/ Unit
@@ -270,6 +275,7 @@
                             <th class="col-xs-1 text-center">
                                 Amount ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
                             </th>
+                            @endif
                         </tr>
 
                         @php
@@ -339,27 +345,29 @@
                                         {{-- @endif --}}
                                     @endif
 
-                                    @if($deal->unit_price == 0 || $deal->unit_price == null)
-                                    <td class="col-xs-1 text-right">
-                                        @if($deal->qty != 0)
-                                            {{ number_format(($deal->amount / $deal->qty), 2)}}
+                                    @if(!$is_do)
+                                        @if($deal->unit_price == 0 || $deal->unit_price == null)
+                                        <td class="col-xs-1 text-right">
+                                            @if($deal->qty != 0)
+                                                {{ number_format(($deal->amount / $deal->qty), 2)}}
+                                            @else
+                                                {{ number_format(($deal->amount), 2)}}
+                                            @endif
+                                        </td>
                                         @else
-                                            {{ number_format(($deal->amount), 2)}}
+                                        <td class="col-xs-1 text-right">
+                                            {{ number_format($deal->unit_price, 2) }}
+                                        </td>
                                         @endif
-                                    </td>
-                                    @else
-                                    <td class="col-xs-1 text-right">
-                                        {{ number_format($deal->unit_price, 2) }}
-                                    </td>
-                                    @endif
-                                    @if($deal->amount != 0)
-                                    <td class="col-xs-1 text-right">
-                                        {{ number_format($deal->amount, 2) }}
-                                    </td>
-                                    @else
-                                    <td class="col-xs-1 text-right">
-                                        <strong>FOC</strong>
-                                    </td>
+                                        @if($deal->amount != 0)
+                                        <td class="col-xs-1 text-right">
+                                            {{ number_format($deal->amount, 2) }}
+                                        </td>
+                                        @else
+                                        <td class="col-xs-1 text-right">
+                                            <strong>FOC</strong>
+                                        </td>
+                                        @endif
                                     @endif
                                 </tr>
                             @endforeach
@@ -388,7 +396,7 @@
                             // $total = number_format($total, 2);
                         @endphp
 
-                        @if($transaction->delivery_fee != 0)
+                        @if($transaction->delivery_fee != 0 and !$is_do)
                         <tr>
                             <td colspan="2" class="text-right">
                                 <strong>Delivery Fee</strong>
@@ -400,87 +408,89 @@
                         </tr>
                         @endif
 
-                        @if($transaction->gst and $transaction->is_gst_inclusive)
-                            <tr class="noBorder">
-                                <td colspan="2" class="text-right">
-                                    <strong>Total</strong>
-                                </td>
-                                <td class="col-xs-3 text-right">
-                                    {{$totalqty}}
-                                </td>
-                                <td></td>
-                                <td class="text-right">
-                                    <strong>{{$total}}</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="text-right">
-                                    <strong>GST ({{$transaction->gst_rate + 0}}%)</strong>
-                                </td>
-                                <td colspan="3"></td>
-                                <td class="text-right">
-                                    {{$gst}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="text-right">
-                                    <strong>Exclude GST</strong>
-                                </td>
-                                <td colspan="3"></td>
-                                <td class="text-right">
-                                    {{$subtotal}}
-                                </td>
-                            </tr>
-                        @elseif($transaction->gst and !$transaction->is_gst_inclusive)
-                            <tr class="noBorder">
-                                <td colspan="2" class="text-right">
-                                    <strong>SubTotal</strong>
-                                </td>
-                                <td colspan="3"></td>
-                                <td class="text-right">
-                                    {{$subtotal}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="text-right">
-                                    <strong>GST ({{$transaction->gst_rate + 0}}%)</strong>
-                                </td>
-                                <td colspan="3"></td>
-                                <td class="text-right">
-                                    {{$gst}}
-                                </td>
-                            </tr>
-                            <tr class="noBorder">
-                                <td colspan="2" class="text-right">
-                                    <strong>Total</strong>
-                                </td>
-                                <td class="text-right" colspan="2">
-                                    {{$totalqty}}
-                                </td>
-                                <td></td>
-                                <td class="text-right">
-                                    <strong>{{$total}}</strong>
-                                </td>
-                            </tr>
-                        @else
-                            <tr class="noBorder">
-                                @if($transaction->is_vending_generate)
-                                    <td class="text-right">
-                                        <strong>Total</strong>
-                                    </td>
-                                @else
+                        @if(!$is_do)
+                            @if($transaction->gst and $transaction->is_gst_inclusive)
+                                <tr class="noBorder">
                                     <td colspan="2" class="text-right">
                                         <strong>Total</strong>
                                     </td>
-                                @endif
-                                <td class="text-right" colspan="2">
-                                    {{$totalqty}}
-                                </td>
-                                <td></td>
-                                <td class="text-right">
-                                    <strong>{{$total}}</strong>
-                                </td>
-                            </tr>
+                                    <td class="col-xs-3 text-right">
+                                        {{$totalqty}}
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <strong>{{$total}}</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <strong>GST ({{$transaction->gst_rate + 0}}%)</strong>
+                                    </td>
+                                    <td colspan="3"></td>
+                                    <td class="text-right">
+                                        {{$gst}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <strong>Exclude GST</strong>
+                                    </td>
+                                    <td colspan="3"></td>
+                                    <td class="text-right">
+                                        {{$subtotal}}
+                                    </td>
+                                </tr>
+                            @elseif($transaction->gst and !$transaction->is_gst_inclusive)
+                                <tr class="noBorder">
+                                    <td colspan="2" class="text-right">
+                                        <strong>SubTotal</strong>
+                                    </td>
+                                    <td colspan="3"></td>
+                                    <td class="text-right">
+                                        {{$subtotal}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <strong>GST ({{$transaction->gst_rate + 0}}%)</strong>
+                                    </td>
+                                    <td colspan="3"></td>
+                                    <td class="text-right">
+                                        {{$gst}}
+                                    </td>
+                                </tr>
+                                <tr class="noBorder">
+                                    <td colspan="2" class="text-right">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-right" colspan="2">
+                                        {{$totalqty}}
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <strong>{{$total}}</strong>
+                                    </td>
+                                </tr>
+                            @else
+                                <tr class="noBorder">
+                                    @if($transaction->is_vending_generate)
+                                        <td class="text-right">
+                                            <strong>Total</strong>
+                                        </td>
+                                    @else
+                                        <td colspan="2" class="text-right">
+                                            <strong>Total</strong>
+                                        </td>
+                                    @endif
+                                    <td class="text-right" colspan="2">
+                                        {{$totalqty}}
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <strong>{{$total}}</strong>
+                                    </td>
+                                </tr>
+                            @endif
                         @endif
                         @endunless
                     </table>
@@ -524,6 +534,7 @@
                                 </span>
                             </div>
                         </div>
+                        @if(!$is_do)
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <span class="text-center col-xs-12">
@@ -537,6 +548,7 @@
                                 </span>
                             </div>
                         </div>
+                        @endif
                     </div>
 
                 </div>
