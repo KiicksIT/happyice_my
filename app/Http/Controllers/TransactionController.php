@@ -641,6 +641,17 @@ class TransactionController extends Controller
     // generate pdf invoice for transaction
     public function generateInvoice($id)
     {
+        $is_do = false;
+        $type = request('type');
+
+        if($type) {
+            if($type == 1) {
+                $is_do = true;
+            }else {
+                $is_do = false;
+            }
+        }
+
         $transaction = Transaction::findOrFail($id);
         $person = Person::findOrFail($transaction->person_id);
         $deals = Deal::whereTransactionId($transaction->id)->get();
@@ -654,6 +665,7 @@ class TransactionController extends Controller
             'deals'         =>  $deals,
             'totalprice'    =>  $totalprice,
             'totalqty'      =>  $totalqty,
+            'is_do' => $is_do
             // 'profile'       =>  $profile,
         ];
 

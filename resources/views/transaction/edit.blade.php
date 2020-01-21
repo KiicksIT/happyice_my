@@ -166,6 +166,7 @@
                         @endif
                         {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-default', 'form'=>'form_cust']) !!}
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary">Print</a>
+                        <a href="/transaction/download/{{$transaction->id}}?type=1" class="btn btn-primary">Print DO</a>
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary">Send Inv Email</a>
                         <a href="/transaction" class="btn btn-default">Cancel</a>
                     </div>
@@ -177,6 +178,7 @@
                         @endif
                         {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-default btn-block', 'form'=>'form_cust']) !!}
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary btn-block">Print</a>
+                        <a href="/transaction/download/{{$transaction->id}}?type=1" class="btn btn-primary">Print DO</a>
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary btn-block">Send Inv Email</a>
                         <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
                     </div>
@@ -200,6 +202,7 @@
                         @endif
                         {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-default', 'form'=>'form_cust']) !!}
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary">Print</a>
+                        <a href="/transaction/download/{{$transaction->id}}?type=1" class="btn btn-primary">Print DO</a>
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary">Send Inv Email</a>
                         <a href="/transaction" class="btn btn-default">Cancel</a>
                     </div>
@@ -210,6 +213,7 @@
                         @endif
                         {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-default btn-block', 'form'=>'form_cust']) !!}
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary btn-block">Print</a>
+                        <a href="/transaction/download/{{$transaction->id}}?type=1" class="btn btn-primary">Print DO</a>
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary btn-block">Send Inv Email</a>
                         <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
                     </div>
