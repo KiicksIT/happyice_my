@@ -146,7 +146,7 @@
                 }
             @endphp
 
-            @if($access)
+            {{-- @if($access) --}}
             <ul class="nav navbar-nav side-nav">
                 @if($transaction_access)
                     <li class="{{ strpos(Request::path(), 'transaction') !== false ? 'active' : '' }}">
@@ -244,6 +244,6 @@
                     </li>
                 @endif --}}
             </ul>
-            @endif
+            {{-- @endif --}}
         </div>
     </nav>
