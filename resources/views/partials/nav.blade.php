@@ -59,7 +59,7 @@
                         $dtd_access = true;
                     }
 
-                    if(auth()->user()->type == 'logistics') {
+                    if(auth()->user()->hasRole('logistics')) {
                         $access = true;
                         $transaction_access = true;
                         $person_access = true;
