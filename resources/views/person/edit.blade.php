@@ -43,15 +43,17 @@
                 <div class="col-md-5 col-sm-5 col-xs-12">
                     <div class="input-group-btn">
                         <div class="pull-right">
-                            {!! Form::submit('Create Transaction', ['class'=> 'btn btn-success', 'form'=>'person_transaction']) !!}
-                            @cannot('transaction_view')
-                                <a href="/person/replicate/{{$person->id}}" class="btn btn-default" onclick="return confirm('Are you sure to replicate?')">
-                                    <i class="fa fa-files-o"></i> <span class="hidden-xs hidden-sm">Replicate</span>
+                            @if(!auth()->user()->hasRole('logistics'))
+                                {!! Form::submit('Create Transaction', ['class'=> 'btn btn-success', 'form'=>'person_transaction']) !!}
+                                @cannot('transaction_view')
+                                    <a href="/person/replicate/{{$person->id}}" class="btn btn-default" onclick="return confirm('Are you sure to replicate?')">
+                                        <i class="fa fa-files-o"></i> <span class="hidden-xs hidden-sm">Replicate</span>
+                                    </a>
+                                @endcannot
+                                <a href="/person/log/{{$person->id}}" class="btn btn-warning">
+                                    <i class="fa fa-history"></i> <span class="hidden-xs hidden-sm">Log History</span>
                                 </a>
-                            @endcannot
-                            <a href="/person/log/{{$person->id}}" class="btn btn-warning">
-                                <i class="fa fa-history"></i> <span class="hidden-xs hidden-sm">Log History</span>
-                            </a>
+                            @endif
                         </div>
                     </div>
                 </div>

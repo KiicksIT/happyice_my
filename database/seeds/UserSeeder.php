@@ -12,6 +12,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+/*
         User::create([
             'name' => 'brian',
             'email' => 'leehongjie91@gmail.com',
@@ -26,14 +27,14 @@ class UserSeeder extends Seeder
             'username' => 'user',
             'password' => 'user',
             'contact' => '83089699',
-        ]); 
+        ]);  */
 
         User::create([
-            'name' => 'happyice',
-            'email' => 'happyice@gmail.com',
-            'username' => 'happyice',
-            'password' => 'happyice',
-            'contact' => '8888888',
-        ]);               
-    }    
+            'name' => 'sc1',
+            'email' => 'superiorcreamery@gmail.com',
+            'username' => 'sc1',
+            'password' => '12345678',
+            'contact' => '',
+        ]);
+    }
 }

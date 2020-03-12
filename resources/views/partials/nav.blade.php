@@ -59,6 +59,13 @@
                         $dtd_access = true;
                     }
 
+                    if(auth()->user()->type == 'logistics') {
+                        $access = true;
+                        $transaction_access = true;
+                        $person_access = true;
+                        $item_access = true;
+                    }
+
                     if(auth()->user()->hasRole('franchisee')) {
                         $access = true;
                         $transaction_access = true;
