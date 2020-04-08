@@ -21,9 +21,13 @@
         @else --}}
             {{-- {!! Form::text('person_id', $transaction->person->cust_id.' - '.$transaction->person->company, ['class'=>'form-control', 'id'=>'person_id', 'readonly'=>'readonly', 'style'=>'margin-bottom:10px']) !!} --}}
         <label style="margin-bottom: 15px; font-size: 18px;">
+            @if(auth()->user()->hasRole('logistics'))
+                {{$transaction->person->cust_id}} - {{$transaction->person->company}}
+            @else
             <a href="/person/@{{ form.person }}">
                 {{$transaction->person->cust_id}} - {{$transaction->person->company}}
             </a>
+            @endif
         </label>
 {{--            @endif --}}
         {!! Form::text('person_id', '@{{form.person}}', ['class'=>'hidden form-control']) !!}

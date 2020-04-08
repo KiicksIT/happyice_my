@@ -22,6 +22,14 @@
         </div>
     </div>
 
+    @php
+        $amount_access = true;
+
+        if(auth()->user()->hasRole('logistics')) {
+            $amount_access = false;
+        }
+    @endphp
+
     <div class="panel-body">
         <div>
             <div class="table-responsive">
@@ -33,16 +41,16 @@
                         <th class="text-center">
                             Ctn
                         </th>
-                        <th class="text-center" >
+                        <th class="text-center {{$amount_access ? '' : 'hidden'}}">
                             Pieces
                         </th>
-                        <th class="text-center" >
+                        <th class="text-center {{$amount_access ? '' : 'hidden'}}">
                             Retail ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
                         </th>
-                        <th class="text-center" >
+                        <th class="text-center {{$amount_access ? '' : 'hidden'}}">
                             Quote ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
                         </th>
-                         <th class="text-center">
+                        <th class="text-center {{$amount_access ? '' : 'hidden'}}">
                             Amount ({{$transaction->person->profile->currency ? $transaction->person->profile->currency->symbol: '$'}})
                         </th>
                     </tr>
@@ -63,16 +71,16 @@
                         <td class="col-md-1 col-xs-2">
                             <input type="text" name="ctn[@{{price.item_id}}]" ng-model="price.ctn" style="min-width: 70px; max-width: 100px;" class="text-right form-control" autocomplete="off_string"/>
                         </td>
-                        <td class="col-md-1 col-xs-2">
+                        <td class="col-md-1 col-xs-2 {{$amount_access ? '' : 'hidden'}}">
                             <input type="text" name="pcs[@{{price.item_id}}]" ng-model="price.pcs" style="min-width: 70px; max-width: 100px;" class="text-right form-control" autocomplete="off_string" ng-readonly="!price.is_inventory"/>
                         </td>
-                        <td class="col-md-2 col-xs-2">
+                        <td class="col-md-2 col-xs-2 {{$amount_access ? '' : 'hidden'}}">
                             <input type="text" name="retail[@{{price.item_id}}]" ng-model="price.retail_price" class="text-right form-control" autocomplete="off_string" readonly="readonly" />
                         </td>
-                        <td class="col-md-2 col-xs-2">
+                        <td class="col-md-2 col-xs-2 {{$amount_access ? '' : 'hidden'}}">
                             <input type="text" name="quote[@{{price.item_id}}]" ng-model="price.quote_price" style="min-width: 70px;" class="text-right form-control" autocomplete="off_string" />
                         </td>
-                        <td class="col-md-2 col-xs-3">
+                        <td class="col-md-2 col-xs-3 {{$amount_access ? '' : 'hidden'}}">
                             <input type="text" name="amounts[@{{price.item_id}}]" ng-model="price.amount" ng-value="getAmount(price)" class="text-right form-control" readonly="readonly"/>
                         </td>
                     </tr>
@@ -81,10 +89,15 @@
                     </tr>
                     <tr>
                         <td class="col-md-1 col-xs-2 text-center"><strong>Total</strong></td>
-                        <td colspan="4" class="col-md-3 text-right">
-                            <td class="text-right" >
+                        <td colspan="4" class="col-md-3 text-right {{$amount_access ? '' : 'hidden'}}">
+                            <td class="text-right" {{$amount_access ? '' : 'hidden'}}>
                                 <strong>
                                     <input type="text" name="total_create" class="text-right form-control" readonly="readonly" ng-value="getTotal()"/>
+                                </strong>
+                            </td>
+                            <td class="text-right {{$amount_access ? 'hidden' : ''}}" >
+                                <strong>
+                                    <input type="text" name="total_create" class="text-right form-control" readonly="readonly" ng-value="getTotalQty()" style="min-width: 70px; max-width: 100px;"/>
                                 </strong>
                             </td>
                         </td>

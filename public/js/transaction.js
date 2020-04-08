@@ -17,6 +17,7 @@ function transactionController($scope, $http) {
     $scope.selection = {};
     $scope.Math = window.Math;
     $scope.totals = [];
+    $scope.total_qty = [];
 
     angular.element(document).ready(function () {
         $('.date').datetimepicker({
@@ -88,6 +89,7 @@ function transactionController($scope, $http) {
         amount = (smallest_unit * price.quote_price / base_unit).toFixed(2);
 
         $scope.totals[price.id] = amount;
+        $scope.total_qty[price.id] = eval(price.ctn);
 
         return amount;
     }
@@ -103,6 +105,19 @@ function transactionController($scope, $http) {
         total = total.toFixed(2);
 
         return total;
+    }
+
+    $scope.getTotalQty = function () {
+        var total_qty = 0;
+        for (var i = 0; i < $scope.total_qty.length; i++) {
+            var qty = $scope.total_qty[i];
+            if (qty) {
+                total_qty += parseFloat(qty);
+            }
+        }
+        total_qty = total_qty.toFixed(4);
+
+        return total_qty;
     }
 
     loadDealTable();

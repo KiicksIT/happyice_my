@@ -69,6 +69,7 @@ class TransactionController extends Controller
         $transactions = $this->getTransactionsData();
 
         $total_amount = $this->calDBTransactionTotal($transactions);
+        $total_qty = $this->calDBTransactionTotalQty($transactions);
         $delivery_total = $this->calDBDeliveryTotal($transactions);
 
         if(request('sortName')){
@@ -84,6 +85,7 @@ class TransactionController extends Controller
 
         $data = [
             'total_amount' => $total_amount + $delivery_total,
+            'total_qty' => $total_qty,
             'transactions' => $transactions,
         ];
         return $data;
@@ -1650,6 +1652,17 @@ class TransactionController extends Controller
         $total_amount = $nonGst_amount + $gst_exclusive + $gst_inclusive;
 
         return $total_amount;
+    }
+
+    // calculating total qty
+    private function calDBTransactionTotalQty($query)
+    {
+        $total_qty = 0;
+        $total_qty_query = clone $query;
+
+        $total_qty = $total_qty_query->sum('transactions.total_qty');
+
+        return $total_qty;
     }
 
     // calculate delivery fees total

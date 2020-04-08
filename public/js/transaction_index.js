@@ -143,7 +143,7 @@ var app = angular.module('app', [
         // retrieve page w/wo search
         function getPage(pageNumber){
             $scope.spinner = true;
-            $http.post('transaction/data?page=' + pageNumber, $scope.search).success(function(data){
+            $http.post('/transaction/data?page=' + pageNumber, $scope.search).success(function(data){
                 if(data.transactions.data){
                     $scope.alldata = data.transactions.data;
                     $scope.totalCount = data.transactions.total;
@@ -161,6 +161,7 @@ var app = angular.module('app', [
                 $scope.All = data.transactions.length;
 
                 // return total amount
+                $scope.total_qty = data.total_qty;
                 $scope.total_amount = data.total_amount;
                 $scope.spinner = false;
             }).error(function(data){

@@ -15,11 +15,14 @@
                     {!! Form::text('remark', null, ['class'=>'form-control input-sm', 'ng-model'=>'search.remark', 'placeholder'=>'Desc']) !!}
                 </div>
                 <div class="form-group col-md-2 col-sm-4 col-xs-6">
-                    {!! Form::label('remark', 'Actve:', ['class'=>'control-label search-title']) !!}
+                    {!! Form::label('is_active', 'Actve:', ['class'=>'control-label search-title']) !!}
                     {!! Form::select('is_active',
                         ['1'=>'Yes', '0'=>'No'],
                         null,
-                        ['class'=>'select form-control', 'ng-model'=>'search.is_active', 'ng-init'=>'search.is_active = "1"'])
+                        ['class'=>'select form-control',
+                        'ng-model'=>'search.is_active',
+                        'ng-init'=>'search.is_active = "1"'
+                        ])
                     !!}
                 </div>
             </div>

@@ -62,7 +62,6 @@
                     if(auth()->user()->hasRole('logistics')) {
                         $access = true;
                         $transaction_access = true;
-                        $person_access = true;
                         $item_access = true;
                     }
 

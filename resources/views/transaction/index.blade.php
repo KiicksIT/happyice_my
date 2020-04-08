@@ -164,6 +164,7 @@
                                 ])
                             !!} --}}
                         </div>
+                        @if(!auth()->user()->hasRole('logistics'))
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('profile_id', 'Profile', ['class'=>'control-label search-title']) !!}
                             {!! Form::select('profile_id', [''=>'All']+$profiles::filterUserProfile()->pluck('name', 'id')->all(), null, ['id'=>'profile_id',
@@ -192,7 +193,9 @@
                                 <option value="3">Equals</option>
                             </select>
                         </div>
+                        @endif
                     </div>
+                    @if(!auth()->user()->hasRole('logistics'))
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('person_active', 'Customer Status', ['class'=>'control-label search-title']) !!}
@@ -215,6 +218,7 @@
                             </select>
                         </div>
                     </div>
+                    @endif
                 </div>
                 <div class="row">
                     <div class="row">
@@ -279,12 +283,21 @@
                         @endif
                     </div>
 
+
                     <div class="col-md-4 col-sm-6 col-xs-12" style="padding-top:5px;">
+                        @if(!auth()->user()->hasRole('logistics'))
+                            <div class="col-md-5 col-xs-5">
+                                Total
+                            </div>
+                            <div class="col-md-7 col-xs-7 text-right" style="border: thin black solid">
+                                <strong>@{{total_amount ? total_amount : 0.00 | currency: "": 2}}</strong>
+                            </div>
+                        @endif
                         <div class="col-md-5 col-xs-5">
-                            Total
+                            Total Qty
                         </div>
                         <div class="col-md-7 col-xs-7 text-right" style="border: thin black solid">
-                            <strong>@{{total_amount ? total_amount : 0.00 | currency: "": 2}}</strong>
+                            <strong>@{{total_qty ? total_qty : 0.0000 | currency: "": 4}}</strong>
                         </div>
                     </div>
 
@@ -401,12 +414,14 @@
                                     <span ng-if="search.sortName == 'driver' && !search.sortBy" class="fa fa-caret-down"></span>
                                     <span ng-if="search.sortName == 'driver' && search.sortBy" class="fa fa-caret-up"></span>
                                 </th>
+                                @if(!auth()->user()->hasRole('logistics'))
                                 <th class="col-md-1 text-center">
                                     <a href="" ng-click="sortTable('total')">
                                     Total Amount
                                     <span ng-if="search.sortName == 'total' && !search.sortBy" class="fa fa-caret-down"></span>
                                     <span ng-if="search.sortName == 'total' && search.sortBy" class="fa fa-caret-up"></span>
                                 </th>
+                                @endif
                                 <th class="col-md-1 text-center">
                                     <a href="" ng-click="sortTable('total_qty')">
                                     Total Qty
@@ -473,9 +488,11 @@
                                     {{-- status by color ended --}}
                                     <td class="col-md-1 text-center">@{{ transaction.del_date}}</td>
                                     <td class="col-md-1 text-center">@{{ transaction.driver }}</td>
-                                    <td class="col-md-1 text-center">
-                                        @{{ transaction.total | currency: "": 2}}
-                                    </td>
+                                    @if(!auth()->user()->hasRole('logistics'))
+                                        <td class="col-md-1 text-center">
+                                            @{{ transaction.total | currency: "": 2}}
+                                        </td>
+                                    @endif
                                     <td class="col-md-1 text-center">@{{ transaction.total_qty }}</td>
                                     {{-- pay status --}}
                                     <td class="col-md-1 text-center" style="color: red;" ng-if="transaction.pay_status == 'Owe'">

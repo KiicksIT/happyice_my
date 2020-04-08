@@ -30,6 +30,7 @@
                         <th class="col-md-1 text-center">
                             Ctn
                         </th>
+                        @if(!auth()->user()->hasRole('logistics'))
                         <th class="col-md-1 text-center">
                             Pcs
                         </th>
@@ -39,6 +40,7 @@
                         <th class="col-md-1 text-center">
                             Amount
                         </th>
+                        @endif
                         <th class="col-md-1 text-center">
                             Action
                         </th>
@@ -58,6 +60,7 @@
                             <td class="col-md-1 text-right">
                                 @{{ deal.ctn }}
                             </td>
+                            @if(!auth()->user()->hasRole('logistics'))
                             <td class="col-md-1 text-right">
                                 <span ng-if="deal.is_inventory">
                                     @{{ (deal.pcs || deal.ctn) ? deal.pcs : deal.pieces }}
@@ -69,6 +72,7 @@
                             {{-- deal amount --}}
                             <td class="col-md-1 text-right" ng-if="deal.amount != 0">@{{ (deal.amount/100 * 100) | currency: "" }}</td>
                             <td class="col-md-1 text-right" ng-if="deal.amount == 0"><strong>FOC</strong></td>
+                            @endif
                             <td class="col-md-1 text-center">
                                 @php
                                     $valid = false;
@@ -129,11 +133,14 @@
                                 <td class="col-md-1 text-right" colspan="2">
                                     <strong>@{{totalqtyModel}}</strong>
                                 </td>
+                                @if(!auth()->user()->hasRole('logistics'))
                                 <td colspan="1"></td>
                                 <td class="col-md-1 text-right">
                                     <strong>@{{totalModel | currency: ""}}</strong>
                                 </td>
+                                @endif
                             </tr>
+                            @if(!auth()->user()->hasRole('logistics'))
                             <tr ng-if="deals.length>0">
                                 <td colspan="3" class="text-right">
                                     <strong>GST ({{number_format($transaction->gst_rate)}}%)</strong>
@@ -152,7 +159,9 @@
                                     @{{subtotalModel | currency: ""}}
                                 </td>
                             </tr>
+                            @endif
                         @elseif($transaction->gst and !$transaction->is_gst_inclusive)
+                            @if(!auth()->user()->hasRole('logistics'))
                             <tr ng-if="deals.length>0">
                                 <td colspan="3" class="text-right">
                                     <strong>Subtotal</strong>
@@ -171,6 +180,7 @@
                                     @{{taxModel}}
                                 </td>
                             </tr>
+                            @endif
                             <tr ng-if="deals.length>0">
                                 <td colspan="3" class="text-right">
                                     <strong>Total</strong>
@@ -178,10 +188,12 @@
                                 <td class="text-right" colspan="2">
                                     <strong>@{{totalqtyModel}}</strong>
                                 </td>
+                                @if(!auth()->user()->hasRole('logistics'))
                                 <td colspan="1"></td>
                                 <td class="col-md-1 text-right">
                                     <strong>@{{totalModel}}</strong>
                                 </td>
+                                @endif
                             </tr>
                         @else
                             <tr ng-if="deals.length>0">
@@ -191,6 +203,7 @@
                                 <td class="col-md-1 text-right">
                                     <strong>@{{totalqtyModel}}</strong>
                                 </td>
+                                @if(!auth()->user()->hasRole('logistics'))
                                 <td class="col-md-1 text-right">
                                     @{{getTotalPieces()}}
                                 </td>
@@ -198,6 +211,7 @@
                                 <td class="col-md-1 text-right">
                                     <strong>@{{totalModel}}</strong>
                                 </td>
+                                @endif
                             </tr>
                         @endif
                         <tr ng-show="(deals | filter:search).deals == 0 || ! deals.length">

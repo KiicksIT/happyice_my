@@ -15,8 +15,10 @@
                 <div class="panel-title">
                     <div class="pull-right">
                         @cannot('transaction_view')
-                        <a href="/item/create" class="btn btn-success">+ New Product</a>
-                        <a href="/inventory/create" class="btn btn-primary">+ Stock Movement</a>
+                        @if(!auth()->user()->hasRole('logistics'))
+                            <a href="/item/create" class="btn btn-success">+ New Product</a>
+                            <a href="/inventory/create" class="btn btn-primary">+ Stock Movement</a>
+                        @endif
                         <a href="/inventory/setting" class="btn btn-warning"><i class="fa fa-cog"></i> Limit Setting</a>
                         <a href="/inventory/email" class="btn btn-info"> Email Alert Limit Setting</a>
                         @endcannot
