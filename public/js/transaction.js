@@ -79,7 +79,7 @@ function transactionController($scope, $http) {
         }
 
         if (price.ctn) {
-            smallest_unit += (price.ctn * base_unit);
+            smallest_unit += (eval(price.ctn) * base_unit);
         }
 
         if (price.pcs) {
