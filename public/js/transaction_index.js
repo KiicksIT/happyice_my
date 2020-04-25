@@ -16,7 +16,8 @@ var app = angular.module('app', [
         $scope.indexFrom = 0;
         $scope.indexTo = 0;
         $scope.headerTemp = '';
-        $scope.today = moment().format("YYYY-MM-DD");
+        $scope.seven_days_previous = moment().subtract(7, 'days').format("YYYY-MM-DD");
+        $scope.ten_days_forward = moment().add(10, 'days').format("YYYY-MM-DD");
         $scope.search = {
             id: '',
             cust_id: '',
@@ -26,8 +27,8 @@ var app = angular.module('app', [
             pay_status: '',
             updated_by: '',
             updated_at: '',
-            delivery_from: $scope.today,
-            delivery_to: $scope.today,
+            delivery_from: $scope.seven_days_previous,
+            delivery_to: $scope.ten_days_forward,
             driver: '',
             custcategories: '',
             person_active: '',

@@ -215,7 +215,9 @@
                         {!! Form::submit('Paid', ['name'=>'paid', 'class'=> 'btn btn-success', 'form'=>'form_cust', 'onclick'=>'clicked(event)']) !!}
                         @endif
                         {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-default', 'form'=>'form_cust']) !!}
+                        @if(!auth()->user()->hasRole('logistics'))
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary">Print</a>
+                        @endif
                         <a href="/transaction/download/{{$transaction->id}}?type=1" class="btn btn-primary">Print DO</a>
                         @if(!auth()->user()->hasRole('logistics'))
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary">Send Inv Email</a>
@@ -228,7 +230,9 @@
                         {!! Form::submit('Paid', ['name'=>'paid', 'class'=> 'btn btn-success btn-block', 'form'=>'form_cust', 'onclick'=>'clicked(event)']) !!}
                         @endif
                         {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-default btn-block', 'form'=>'form_cust']) !!}
+                        @if(!auth()->user()->hasRole('logistics'))
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary btn-block">Print</a>
+                        @endif
                         <a href="/transaction/download/{{$transaction->id}}?type=1" class="btn btn-primary">Print DO</a>
                         @if(!auth()->user()->hasRole('logistics'))
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary btn-block">Send Inv Email</a>
@@ -280,8 +284,10 @@
                         @if(!auth()->user()->hasRole('franchisee') and !auth()->user()->hasRole('logistics'))
                         {!! Form::submit('Update', ['name'=>'update', 'class'=> 'btn btn-warning', 'form'=>'form_cust']) !!}
                         @endif
+                        @if(!auth()->user()->hasRole('logistics'))
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary">Send Inv Email</a>
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary">Print</a>
+                        @endif
                         <a href="/transaction" class="btn btn-default">Cancel</a>
                     </div>
                     <div class="hidden-lg hidden-md hidden-sm">
@@ -290,8 +296,8 @@
                         @endif
                         @if(!auth()->user()->hasRole('logistics'))
                         <a href="/transaction/emailInv/{{$transaction->id}}" class="btn btn-primary btn-block">Send Inv Email</a>
-                        @endif
                         <a href="/transaction/download/{{$transaction->id}}" class="btn btn-primary btn-block">Print</a>
+                        @endif
                         <a href="/transaction" class="btn btn-default btn-block">Cancel</a>
                     </div>
                 </div>

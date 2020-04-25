@@ -93,6 +93,7 @@
                     </div>
                     </div>
                     <div class="row">
+                        @if(!auth()->user()->hasRole('logistics'))
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('pay_status', 'Payment', ['class'=>'control-label search-title']) !!}
                             {!! Form::select('pay_status', [''=>'All', 'Owe'=>'Owe', 'Paid'=>'Paid'], null,
@@ -103,6 +104,7 @@
                                 ])
                             !!}
                         </div>
+                        @endif
 
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             {!! Form::label('updated_by', 'Last Modify By', ['class'=>'control-label search-title']) !!}
@@ -428,12 +430,14 @@
                                     <span ng-if="search.sortName == 'total_qty' && !search.sortBy" class="fa fa-caret-down"></span>
                                     <span ng-if="search.sortName == 'total_qty' && search.sortBy" class="fa fa-caret-up"></span>
                                 </th>
+                                @if(!auth()->user()->hasRole('logistics'))
                                 <th class="col-md-1 text-center">
                                     <a href="" ng-click="sortTable('pay_status')">
                                     Payment
                                     <span ng-if="search.sortName == 'pay_status' && !search.sortBy" class="fa fa-caret-down"></span>
                                     <span ng-if="search.sortName == 'pay_status' && search.sortBy" class="fa fa-caret-up"></span>
                                 </th>
+                                @endif
                                 <th class="col-md-1 text-center">
                                     <a href="" ng-click="sortTable('updated_by')">
                                     Last Modified By
@@ -495,20 +499,25 @@
                                     @endif
                                     <td class="col-md-1 text-center">@{{ transaction.total_qty }}</td>
                                     {{-- pay status --}}
+                                    @if(!auth()->user()->hasRole('logistics'))
                                     <td class="col-md-1 text-center" style="color: red;" ng-if="transaction.pay_status == 'Owe'">
                                         @{{ transaction.pay_status }}
                                     </td>
                                     <td class="col-md-1 text-center" style="color: green;" ng-if="transaction.pay_status == 'Paid'">
                                         @{{ transaction.pay_status }}
                                     </td>
+                                    @endif
                                     {{-- pay status ended --}}
                                     <td class="col-md-1 text-center">@{{ transaction.updated_by}}</td>
                                     <td class="col-md-1 text-center">@{{ transaction.updated_at }}</td>
                                     <td class="col-md-1 text-center">
                                         {{-- print invoice         --}}
+                                        @if(!auth()->user()->hasRole('logistics'))
                                         <a href="/transaction/download/@{{ transaction.id }}" class="btn btn-primary btn-sm" ng-if="transaction.status != 'Pending' && transaction.status != 'Cancelled'">Print</a>
                                         {{-- button view shown when cancelled --}}
                                         <a href="/transaction/@{{ transaction.id }}/edit" class="btn btn-sm btn-default" ng-if="transaction.status == 'Cancelled'">View</a>
+                                        @endif
+                                        <a href="/transaction/download/@{{transaction.id}}?type=1" class="btn btn-primary btn-sm" ng-if="transaction.status != 'Pending' && transaction.status != 'Cancelled'">Print DO</a>
 
                                         {{-- Payment Verification --}}
 {{--                                         @cannot('supervisor_view')
